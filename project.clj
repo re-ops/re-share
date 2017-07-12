@@ -15,4 +15,6 @@
      ; string interpulation  
      [org.clojure/core.incubator "0.1.4"]
   ]
+
+  :signing {:gpg-key "narkisr@gmail.com"}
 )
