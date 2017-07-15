@@ -1,10 +1,9 @@
 (ns re-share.zero.common
   (:require
-    [clojure.core.strint :refer  (<<)]
-    [re-share.zero.keys :refer (read-key paths)])
+   [clojure.core.strint :refer  (<<)]
+   [re-share.zero.keys :refer (read-key paths)])
   (:import
-    [org.zeromq ZMQ]
-    ))
+   [org.zeromq ZMQ]))
 
 (defn context [] (ZMQ/context 1))
 
@@ -13,8 +12,7 @@
 
 (defn client-socket [t parent]
   (let [{:keys [server-public client-public client-private]} (paths parent)]
-    (doto
-      (.socket (context) t)
+    (doto (.socket (context) t)
       (.setZAPDomain (.getBytes "global"))
       (.setCurveServerKey (read-key server-public))
       (.setCurvePublicKey (read-key client-public))
@@ -22,5 +20,4 @@
 
 (comment
   (read-key ".curve/client-private.key")
-  (alength (read-key ".curve/client-public.key"))
-  )
+  (alength (read-key ".curve/client-public.key")))
