@@ -2,13 +2,12 @@
 
 Common utilities for re-ops
 
-[![Build Status](https://travis-ci.org/re-ops/re-com.png)](https://travis-ci.org/re-ops/re-com)
+[![Build Status](https://travis-ci.org/re-ops/re-share.png)](https://travis-ci.org/re-ops/re-share)
 
 
 # Prerequisite
 
-* JDK 8 with. 
-* libsodium and libzmq
+* JDK 8 with.
 
 # Copyright and license
 

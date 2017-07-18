@@ -10,8 +10,8 @@
 
      ; fs access
      [me.raynes/fs "1.4.6"]
-     
-     ; string interpulation  
+
+     ; string interpulation
      [org.clojure/core.incubator "0.1.4"]
   ]
 
