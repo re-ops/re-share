@@ -1,4 +1,4 @@
-(defproject re-share "0.1.1"
+(defproject re-share "0.1.2"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -13,6 +13,15 @@
 
      ; string interpulation
      [org.clojure/core.incubator "0.1.4"]
+
+     ; timeunits
+     [fogus/minderbinder "0.2.0"]
+
+     ; metrics
+     [com.github.oshi/oshi-core "3.4.2"]
+     [com.github.oshi/oshi-json "3.4.2"]
+     [cheshire "5.7.1"]
+
   ]
 
   :repositories  {"bintray"  "http://dl.bintray.com/content/narkisr/narkisr-jars"}
