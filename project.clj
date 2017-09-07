@@ -1,4 +1,4 @@
-(defproject re-share "0.1.2"
+(defproject re-share "0.2.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -6,7 +6,7 @@
      [org.clojure/clojure "1.8.0"]
 
      ; zeromq
-     [org.zeromq/jzmq "3.1.1"]
+     [org.zeromq/jeromq "0.4.1"]
 
      ; fs access
      [me.raynes/fs "1.4.6"]

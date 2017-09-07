@@ -10,10 +10,10 @@
 (defn close! [sockets]
   (doseq [[k s] sockets] (.close s)))
 
-(defn client-socket [t parent]
+(defn client-socket [ctx t parent]
   (let [{:keys [server-public client-public client-private]} (paths parent)]
-    (doto (.socket (context) t)
-      (.setZAPDomain (.getBytes "global"))
+    (doto (.socket ctx t)
+      (.setZapDomain (.getBytes "global"))
       (.setCurveServerKey (read-key server-public))
       (.setCurvePublicKey (read-key client-public))
       (.setCurveSecretKey (read-key client-private)))))

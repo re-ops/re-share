@@ -3,21 +3,19 @@
    [clojure.core.strint :refer  (<<)]
    [me.raynes.fs :refer (mkdir exists?)])
   (:import
-   [org.zeromq ZCert ZContext ZAuth]
+   [zmq.io.mechanism.curve Curve]
    [java.nio.charset Charset]))
 
-(defn- setup
-  "Setup auth context"
-  []
-  (doto (ZAuth. (ZContext.))
-    (.setVerbose true)))
+;;  byte [] [] serverKeyPair = new Curve ().keypair ();
+;;  byte [] serverPublicKey = serverKeyPair [0];
+;;  byte [] serverSecretKey = serverKeyPair [1];
 
 (defn generate-pair
   "Generate pub/secret key pairs"
   [parent prefix]
-  (let [zcert (ZCert.)]
-    (spit (str parent "/" prefix "-private.key") (.getSecretKeyAsZ85 zcert))
-    (spit (str parent "/" prefix "-public.key") (.getPublicKeyAsZ85 zcert))))
+  (let [pair (.keypairZ85 (Curve.))]
+    (spit (str parent "/" prefix "-private.key") (aget pair 1))
+    (spit (str parent "/" prefix "-public.key") (aget pair 0))))
 
 (defonce utf8 (Charset/forName "UTF-8"))
 
@@ -57,7 +55,6 @@
   [parent]
   (when-not (client-keys-exist? parent)
     (mkdir parent)
-    (setup)
     (generate-pair parent "client")))
 
 (defn create-server-keys
@@ -65,10 +62,9 @@
   [parent]
   (when-not (server-pub-exist? parent)
     (mkdir parent)
-    (setup)
     (generate-pair parent "server")))
 
 (comment
-  (create-keys ".curve")
+  (create-client-keys ".curve")
   (client-keys-exist? ".curve"))
 
