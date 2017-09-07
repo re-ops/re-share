@@ -2,8 +2,7 @@
   "Common re-ops functions"
   (:import java.util.Date)
   (:require
-    [minderbinder.time :refer  (parse-time-unit)]))
-
+   [minderbinder.time :refer  (parse-time-unit)]))
 
 (defn find-port
   "find the first available port within a given range"

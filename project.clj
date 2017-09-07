@@ -24,6 +24,19 @@
 
   ]
 
+   :plugins [
+     [jonase/eastwood "0.2.4"]
+     [lein-cljfmt "0.5.6"]
+     [lein-ancient "0.6.7" :exclusions [org.clojure/clojure]]
+     [lein-tag "0.1.0"]
+     [lein-set-version "0.3.0"]]
+
+   :aliases {
+     "travis" [
+        "do" "clean," "compile," "cljsbuild" "once," "cljfmt" "check," "eastwood"
+     ]
+   }
+
   :repositories  {"bintray"  "http://dl.bintray.com/content/narkisr/narkisr-jars"}
 
   :signing {:gpg-key "narkisr@gmail.com"}
