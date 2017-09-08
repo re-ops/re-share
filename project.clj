@@ -14,6 +14,9 @@
      ; string interpulation
      [org.clojure/core.incubator "0.1.4"]
 
+     ; logging
+     [com.taoensso/timbre "4.10.0"]
+
      ; timeunits
      [fogus/minderbinder "0.2.0"]
 
@@ -21,7 +24,6 @@
      [com.github.oshi/oshi-core "3.4.2"]
      [com.github.oshi/oshi-json "3.4.2"]
      [cheshire "5.7.1"]
-
   ]
 
    :plugins [
