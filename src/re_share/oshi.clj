@@ -1,4 +1,4 @@
-(ns re-share.metrics
+(ns re-share.oshi
   (:require
    [taoensso.timbre :refer (refer-timbre set-level! merge-config!)]
    [cheshire.core :refer (parse-string)])
@@ -16,6 +16,9 @@
    (read-metrics (PropertiesUtil/loadProperties "oshi.json.properties")))
   ([props]
    (parse-string (.toCompactJSON si props) true)))
+
+(defn os []
+  (keyword (get-in (read-metrics) [:operatingSystem :family])))
 
 (comment
   (clojure.pprint/pprint (get-in (read-metrics) [:operatingSystem :processes]))
