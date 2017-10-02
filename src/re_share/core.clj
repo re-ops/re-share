@@ -1,6 +1,9 @@
 (ns re-share.core
   "Common re-ops functions"
-  (:import java.util.Date)
+  (:import
+   java.util.Date
+   java.security.MessageDigest
+   java.math.BigInteger)
   (:require
    [minderbinder.time :refer  (parse-time-unit)]))
 
@@ -27,3 +30,7 @@
           (do (Thread/sleep (parse-time-unit sleep)) (recur)))
         (throw (ex-info message timings))))))
 
+(defn md5 [^String s]
+  (let [algorithm (MessageDigest/getInstance "MD5")
+        raw (.digest algorithm (.getBytes s))]
+    (format "%032x" (BigInteger. 1 raw))))
