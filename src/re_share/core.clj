@@ -1,11 +1,14 @@
 (ns re-share.core
   "Common re-ops functions"
+  (:require
+   [taoensso.timbre :refer  (refer-timbre)]
+   [minderbinder.time :refer  (parse-time-unit)])
   (:import
    java.util.Date
    java.security.MessageDigest
-   java.math.BigInteger)
-  (:require
-   [minderbinder.time :refer  (parse-time-unit)]))
+   java.math.BigInteger))
+
+(refer-timbre)
 
 (defn find-port
   "find the first available port within a given range"
@@ -34,3 +37,6 @@
   (let [algorithm (MessageDigest/getInstance "MD5")
         raw (.digest algorithm (.getBytes s))]
     (format "%032x" (BigInteger. 1 raw))))
+
+(defn error-m [e]
+  (error (.getMessage e) (.getStackTrace e)))
