@@ -2,8 +2,7 @@
   (:require
    [clojure.core.strint :refer  (<<)]
    [re-share.zero.keys :refer (read-key paths)]
-   [re-share.core :refer (error-m)]
-   )
+   [re-share.core :refer (error-m)])
   (:import
    [org.zeromq ZMQ]))
 
