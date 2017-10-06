@@ -25,7 +25,7 @@
   "A general wait for pred function
      (wait-for {:timeout [1 :minute] #() \"waiting for nothing failed\")}
   "
-  [{:keys [timeout sleep] :or {sleep [1 :seconds]} :as timings} pred message]
+  [{:keys [timeout sleep] :or {sleep [100 :ms]} :as timings} pred message]
   {:pre [(map? timings)]}
   (let [wait (+ (curr-time) (parse-time-unit timeout))]
     (loop []
