@@ -4,6 +4,8 @@
    [taoensso.timbre :refer  (refer-timbre)]
    [minderbinder.time :refer  (parse-time-unit)])
   (:import
+   java.io.StringWriter
+   java.io.PrintWriter
    java.util.Date
    java.security.MessageDigest
    java.math.BigInteger))
@@ -39,4 +41,6 @@
     (format "%032x" (BigInteger. 1 raw))))
 
 (defn error-m [e]
-  (error (.getMessage e) (.getStackTrace e)))
+  (let [sw (StringWriter.) p (PrintWriter. sw)]
+    (.printStackTrace e p)
+    (error (.getMessage e) (.toString sw))))
