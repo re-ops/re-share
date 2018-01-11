@@ -29,9 +29,14 @@
      ; serialization
      [cheshire "5.7.1"]
 
-     ;scheduling
+     ; scheduling
      [clj-time/clj-time "0.13.0"]
      [jarohen/chime "0.2.1" :exclusions [org.clojure/core.async]]
+
+     ; pretty output
+     [narkisr/clansi "1.2.0"]
+
+
   ]
 
    :plugins [
