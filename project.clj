@@ -1,4 +1,4 @@
-(defproject re-share "0.3.0"
+(defproject re-share "0.4.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -26,7 +26,12 @@
      [net.java.dev.jna/jna "4.5.0"]
      [net.java.dev.jna/jna-platform "4.5.0"]
 
+     ; serialization
      [cheshire "5.7.1"]
+
+     ;scheduling
+     [clj-time/clj-time "0.13.0"]
+     [jarohen/chime "0.2.1" :exclusions [org.clojure/core.async]]
   ]
 
    :plugins [
