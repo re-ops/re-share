@@ -32,6 +32,7 @@
 
      ; scheduling
      [clj-time/clj-time "0.13.0"]
+     [org.clojure/core.async "0.3.443"]
      [jarohen/chime "0.2.1" :exclusions [org.clojure/core.async]]
 
      ; pretty output
