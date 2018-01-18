@@ -40,7 +40,7 @@
                               :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
   (merge-config!
    {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
-  (run-purge 10))
+  (run-purge (* 60 5)))
 
 (defn debug-on
   ([] (set-level! :debug))
