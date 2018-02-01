@@ -1,9 +1,9 @@
-(defproject re-share "0.4.2"
+(defproject re-share "0.5.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
-     [org.clojure/clojure "1.8.0"]
+     [org.clojure/clojure "1.9.0"]
 
      ; zeromq
      [org.zeromq/jeromq "0.4.1"]
@@ -19,7 +19,7 @@
      [timbre-ns-pattern-level "0.1.2"]
 
      ; timeunits
-     [fogus/minderbinder "0.2.0"]
+     [fogus/minderbinder "0.3.0"]
 
      ; metrics
      [com.github.oshi/oshi-core "3.4.3" :exclude [net.java.dev.jna/jna net.java.dev.jna/jna-platform]]
