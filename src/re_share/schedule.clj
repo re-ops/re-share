@@ -56,7 +56,7 @@
    (doseq [[k f] @chs] (halt! k)))
   ([k]
    (debug "closing channel")
-   (close! (@chs k))
+   ((@chs k))
    (debug "clearing chs and status atoms")
    (swap! chs dissoc k)
    (swap! status dissoc k)))
