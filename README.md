@@ -4,11 +4,6 @@ Common utilities for re-ops
 
 [![Build Status](https://travis-ci.org/re-ops/re-share.png)](https://travis-ci.org/re-ops/re-share)
 
-
-# Prerequisite
-
-* JDK 8 with.
-
 # Copyright and license
 
 Copyright [2017] [Ronen Narkis]
