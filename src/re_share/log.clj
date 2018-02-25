@@ -35,7 +35,7 @@
   ; disable-coloring
   (merge-config!
    {:output-fn (partial output-fn  {:stacktrace-fonts {}})})
-  (merge-config! {:ns-blacklist ws})
+  (merge-config! {:ns-blacklist bs})
   (merge-config! {:appenders {:println (merge {:ns-whitelist ws} (println-appender {:stream :auto}))
                               :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
   (merge-config!
