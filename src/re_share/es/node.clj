@@ -12,20 +12,20 @@
 
 (def snif (atom nil))
 
-(defn connect-
+(defn- connect-
   "Connecting to Elasticsearch"
-  [{:keys [host port]}]
+  [{:keys [host port user pass]}]
   (when-not @c
     (info "Connecting to elasticsearch using http://~{host}:~{port}")
     (reset! c
             (s/client {:hosts [(<< "http://~{host}:~{port}")]
-                       :basic-auth {:user "elastic" :password "changeme"}}))
+                       :basic-auth {:user user :password pass}}))
     (reset! snif (s/sniffer @c))))
 
 (defn connect
   "Connecting to Elasticsearch with retry support"
-  [{:keys [host port]}]
-  (safely (connect-)
+  [m]
+  (safely (connect- m)
           :on-error
           :max-retry 5
           :message "Error while trying to connect to Elasticsearch"
