@@ -46,4 +46,4 @@
 (defn connection []
   (if @c
     @c
-    (throw (ex-info "no connection is set for Elasticsearch"))))
+    (throw (ex-info "no connection is set for Elasticsearch" {}))))
