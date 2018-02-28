@@ -1,4 +1,4 @@
-(defproject re-share "0.5.4"
+(defproject re-share "0.6.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -37,7 +37,12 @@
 
      ; pretty output
      [narkisr/clansi "1.2.0"]
-  ]
+     
+     ; es
+     [cc.qbits/spandex "0.5.5" :exclusions [org.clojure/clojure]]
+     [org.apache.httpcomponents/httpclient "4.5.2"]
+     [com.brunobonacci/safely "0.2.4"]
+   ]
 
    :plugins [
      [jonase/eastwood "0.2.4"]
