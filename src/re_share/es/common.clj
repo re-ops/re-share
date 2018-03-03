@@ -24,7 +24,7 @@
 (defn- handle-ex [e]
   (when-not (reactor-stopped e)
     (error e (ex-data e))
-    false))
+    (throw e)))
 
 (defn exists-call
   [target]
