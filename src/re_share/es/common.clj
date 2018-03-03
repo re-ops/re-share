@@ -11,13 +11,21 @@
 ; Common ES functions
 
 ; when we reset the connection
-(def reactor-stopped "Request cannot be executed; I/O reactor status: STOPPED")
+(def reactor-stopped)
 
 (defn- ok [resp]
   (#{200 201} (:status resp)))
 
+(defn- illegal [e]
+  (instance? java.lang.IllegalStateException e))
+
+(defn- reactor-stopped [e]
+  (let [c "Request cannot be executed; I/O reactor status: STOPPED"]
+    (when (and (illegal e) (= (-> e Throwable->map :cause) c)))
+    true))
+
 (defn- handle-ex [e]
-  (when-not (= (-> e Throwable->map :cause) reactor-stopped)
+  (when-not (reactor-stopped e)
     (error e (ex-data e))
     false))
 
@@ -77,11 +85,11 @@
   [index t m]
   (try
     (let [{:keys [status body] :as resp} (s/request @c {:url [index t] :method :post :body m})]
-      (when-not (ok m)
+      (when-not (ok resp)
         (throw (ex-info "failed to persist results" resp)))
       (body :_id))
-      (catch Exception e
-        (handle-ex e))))
+    (catch Exception e
+      (handle-ex e))))
 
 (def ^:const settings {:number_of_shards 1})
 
