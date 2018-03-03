@@ -86,7 +86,7 @@
   (try
     (let [{:keys [status body] :as resp} (s/request @c {:url [index t] :method :post :body m})]
       (when-not (ok resp)
-        (throw (ex-info "failed to persist results" resp)))
+        (throw (ex-info "failed to create" {:resp resp :m m :t t :index index})))
       (body :_id))
     (catch Exception e
       (handle-ex e))))
