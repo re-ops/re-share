@@ -21,8 +21,7 @@
 
 (defn- reactor-stopped [e]
   (let [c "Request cannot be executed; I/O reactor status: STOPPED"]
-    (when (and (illegal e) (= (-> e Throwable->map :cause) c)))
-    true))
+    (and (illegal e) (= (-> e Throwable->map :cause) c))))
 
 (defn- handle-ex [e]
   (when-not (reactor-stopped e)
