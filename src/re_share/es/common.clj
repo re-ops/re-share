@@ -10,15 +10,13 @@
 
 ; Common ES functions
 
-; when we reset the connection
-(def reactor-stopped)
-
 (defn- ok [resp]
   (#{200 201} (:status resp)))
 
 (defn- illegal [e]
   (instance? java.lang.IllegalStateException e))
 
+; when we reset the connection
 (defn- reactor-stopped [e]
   (let [c "Request cannot be executed; I/O reactor status: STOPPED"]
     (and (illegal e) (= (-> e Throwable->map :cause) c))))
