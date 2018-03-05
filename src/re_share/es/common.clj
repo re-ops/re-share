@@ -109,3 +109,10 @@
         {:keys [body]} (s/request @c {:url [index type :_search] :method :get :body query})]
     (mapv (juxt :_id :_source) (get-in body [:hits :hits]))))
 
+(defn delete-by
+  "Delete by query like {:match {:type \"nmap scan\"}}"
+  [index type query]
+  (try
+    (s/request @c {:url [index type :_delete_by_query] :method :post :body {:query query}})
+    (catch Exception e
+      (handle-ex e))))
