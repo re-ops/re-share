@@ -31,7 +31,8 @@
   (try
     (ok (s/request @c {:url target :method :head}))
     (catch Exception e
-      (handle-ex e))))
+      (when-not (= 404 (:status (ex-data e)))
+        (handle-ex e)))))
 
 (defn exists?
   "Check if index exists or instance with id existing within an index"
