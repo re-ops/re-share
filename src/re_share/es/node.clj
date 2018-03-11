@@ -16,7 +16,7 @@
   "Connecting to Elasticsearch"
   [{:keys [host port user pass]}]
   (when-not @c
-    (info "Connecting to elasticsearch using http://~{host}:~{port}")
+    (info (<< "Connecting to elasticsearch using http://~{host}:~{port}"))
     (reset! c
             (s/client {:hosts [(<< "http://~{host}:~{port}")]
                        :basic-auth {:user user :password pass}}))
