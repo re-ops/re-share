@@ -12,25 +12,36 @@
 
 (def snif (atom nil))
 
-(defn- connect-
+(defn connection []
+  (if @c
+    @c
+    (throw (ex-info "no connection is set for Elasticsearch" {}))))
+
+(defn health
+  "get cluster health"
+  []
+  (:body (s/request (connection) {:url ["_cluster" "health"] :method :get})))
+
+(defn check
+  "check the connection is working and cluster is healthy"
+  []
+  (try
+    (let [h (health)]
+      (if (= "red" (h :status))
+        (throw (ex-info "Elasticsearch is read" h))))
+    (catch java.net.ConnectException e
+      (throw (ex-info "Elasticsearch is down" {})))))
+
+(defn connect
   "Connecting to Elasticsearch"
-  [{:keys [host port user pass]}]
+  [{:keys [host port user pass] :as m}]
   (when-not @c
     (info (<< "Connecting to elasticsearch using http://~{host}:~{port}"))
     (reset! c
             (s/client {:hosts [(<< "http://~{host}:~{port}")]
                        :basic-auth {:user user :password pass}}))
+    (check)
     (reset! snif (s/sniffer @c))))
-
-(defn connect
-  "Connecting to Elasticsearch with retry support"
-  [m]
-  (safely (connect- m)
-          :on-error
-          :max-retry 5
-          :message "Error while trying to connect to Elasticsearch"
-          :log-errors true
-          :retry-delay [:random-range :min 2000 :max 5000]))
 
 (defn stop
   "Reset connection atom"
@@ -42,8 +53,3 @@
   (when @snif
     (s/close! @snif)
     (reset! snif nil)))
-
-(defn connection []
-  (if @c
-    @c
-    (throw (ex-info "no connection is set for Elasticsearch" {}))))
