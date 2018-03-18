@@ -37,10 +37,9 @@
 
      ; pretty output
      [narkisr/clansi "1.2.0"]
-     
+
      ; es
-     [cc.qbits/spandex "0.5.5" :exclusions [org.clojure/clojure]]
-     [org.apache.httpcomponents/httpclient "4.5.2"]
+     [cc.qbits/spandex "0.6.0" :exclusions [org.clojure/clojure]]
      [com.brunobonacci/safely "0.2.4"]
    ]
 
