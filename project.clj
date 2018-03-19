@@ -57,7 +57,7 @@
           [codox-theme-rdash "0.1.2"]]
          :plugins [[lein-codox "0.10.3"]]
          :codox {
-            :project {:name "re-mote"}
+            :project {:name "re-share"}
             :themes [:rdash]
             :source-paths ["src"]
             :source-uri "https://github.com/re-ops/re-share/blob/master/{filepath}#L{line}"
