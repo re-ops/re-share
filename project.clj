@@ -50,9 +50,28 @@
      [lein-tag "0.1.0"]
      [lein-set-version "0.3.0"]]
 
+   :profiles {
+     :codox {
+       :dependencies [
+          [org.clojure/tools.reader "1.1.0"]
+          [codox-theme-rdash "0.1.2"]]
+         :plugins [[lein-codox "0.10.3"]]
+         :codox {
+            :project {:name "re-share"}
+            :themes [:rdash]
+            :source-paths ["src"]
+            :source-uri "https://github.com/re-ops/re-share/blob/master/{filepath}#L{line}"
+         }
+      }
+   }
+
+
    :aliases {
      "travis" [
         "do" "clean," "compile," "cljfmt" "check," "eastwood"
+     ]
+     "docs" [
+         "with-profile" "codox" "do" "codox"
      ]
    }
 
