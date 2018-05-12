@@ -21,7 +21,7 @@
   (keyword (get-in (read-metrics) [:operatingSystem :family])))
 
 (defn get-processes []
-   (map bean (.getProcesses (.getOperatingSystem si) 0 nil)))
+  (map bean (.getProcesses (.getOperatingSystem si) 0 nil)))
 
 (comment
   (clojure.pprint/pprint (bean (.getComputerSystem hal)))
