@@ -10,14 +10,27 @@
    [clojure.core.strint :refer (<<)]
    [chime :refer [chime-ch]]
    [clj-time.core :as t]
-   [clj-time.coerce :refer [to-long]]
+   [clj-time.format :as f]
    [clojure.java.io :refer (reader)]
    [re-share.schedule :refer (watch seconds)]))
 
 (refer-timbre)
 
+(defn this-week [date]
+  (t/within? (t/interval (t/minus (t/now) (t/weeks 1)) (t/now)) date))
+
+(defn log-date [[f s]]
+  [f (this-week (f/parse (f/formatter "yyyyMMdd") s)) (f/parse (f/formatter "yyyyMMdd") s)])
+
+(defn older-logs []
+  (map #(log-date (re-matches #".*log.(\d+)" (.getName %)))  (me.raynes.fs/glob "*log.*")))
+
 (defn run-purge [s]
-  (watch :weekly-logs-purge (seconds s) (fn [] (trace "purging logs at" (t/now)) (debug "clearing weekly logs"))))
+  (watch :weekly-logs-purge (seconds s)
+         (fn []
+           (trace "purging logs at" (t/now))
+
+           (debug "clearing weekly logs"))))
 
 (def level-color
   {:info :green :debug :blue :error :red :warn :yellow})
@@ -55,3 +68,6 @@
 
 (defn refer-share-logging []
   (require '[re-share.log :as share-log :refer (debug-on debug-off redirect-output)]))
+
+(comment
+  (older-logs))
