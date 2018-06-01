@@ -28,7 +28,7 @@
   "Logs older than one week"
   []
   (filter (comp not this-week)
-          (map log-date (filter identity (map #(re-matches #".*log.(\d+)" (.getName %))  (glob "*log.*"))))))
+          (map log-date (filter identity (map #(re-matches #".*log.(\d{8}).*" (.getName %))  (glob "*log.*"))))))
 
 (defn purge-logs
   "Purge logs older than one week"
@@ -78,7 +78,3 @@
 
 (defn refer-share-logging []
   (require '[re-share.log :as share-log :refer (debug-on debug-off redirect-output)]))
-
-(comment
-  (purge-logs)
-  )
