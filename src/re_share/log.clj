@@ -1,6 +1,8 @@
 (ns re-share.log
   "log collection"
   (:require
+   [clojure.core.strint :refer  (<<)]
+   [me.raynes.fs :refer (glob delete)]
    [timbre-ns-pattern-level :as level]
    [clojure.string :refer (join upper-case)]
    [taoensso.timbre.appenders.3rd-party.rolling :refer (rolling-appender)]
@@ -16,21 +18,29 @@
 
 (refer-timbre)
 
-(defn this-week [date]
+(defn- this-week [{:keys [date]}]
   (t/within? (t/interval (t/minus (t/now) (t/weeks 1)) (t/now)) date))
 
-(defn log-date [[f s]]
-  [f (this-week (f/parse (f/formatter "yyyyMMdd") s)) (f/parse (f/formatter "yyyyMMdd") s)])
+(defn- log-date [[f s]]
+  {:file f :date (f/parse (f/formatter "yyyyMMdd") s)})
 
-(defn older-logs []
-  (map #(log-date (re-matches #".*log.(\d+)" (.getName %)))  (me.raynes.fs/glob "*log.*")))
+(defn old-logs
+  "Logs older than one week"
+  []
+  (filter (comp not this-week)
+          (map log-date (filter identity (map #(re-matches #".*log.(\d+)" (.getName %))  (glob "*log.*"))))))
+
+(defn purge-logs
+  "Purge logs older than one week"
+  []
+  (let [cleared (old-logs)]
+    (doseq [{:keys [file]} cleared]
+      (trace (<< "purging ~{file}"))
+      (delete file))
+    (debug (<< "cleared ~(count cleared) files"))))
 
 (defn run-purge [s]
-  (watch :weekly-logs-purge (seconds s)
-         (fn []
-           (trace "purging logs at" (t/now))
-
-           (debug "clearing weekly logs"))))
+  (watch :weekly-logs-purge (seconds s) purge-logs))
 
 (def level-color
   {:info :green :debug :blue :error :red :warn :yellow})
@@ -70,4 +80,5 @@
   (require '[re-share.log :as share-log :refer (debug-on debug-off redirect-output)]))
 
 (comment
-  (older-logs))
+  (purge-logs)
+  )
