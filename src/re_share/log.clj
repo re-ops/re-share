@@ -37,7 +37,7 @@
     (doseq [{:keys [file]} cleared]
       (trace (<< "purging ~{file}"))
       (delete file))
-    (debug (<< "cleared ~(count cleared) files"))))
+    (debug (<< "purged ~(count cleared) log files"))))
 
 (defn run-purge [s]
   (watch :weekly-logs-purge (seconds s) purge-logs))
@@ -63,7 +63,7 @@
                               :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
   (merge-config!
    {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
-  (run-purge (* 60 5)))
+  (run-purge (* 60 60 24)))
 
 (defn debug-on
   ([] (set-level! :debug))
