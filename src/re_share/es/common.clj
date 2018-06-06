@@ -2,6 +2,7 @@
   "Common ES functions"
   (:refer-clojure :exclude (get))
   (:require
+   [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [qbits.spandex :as s]
    [re-share.es.node :refer (connection)]))
@@ -117,3 +118,17 @@
     (s/request (connection) {:url [index type :_delete_by_query] :method :post :body {:query query}})
     (catch Exception e
       (handle-ex e))))
+
+(def conn-prefix (atom :default))
+
+(defn get-es! [& ks]
+  (apply get! :elasticsearch @conn-prefix ks))
+
+(defn prefix-switch
+  "Change es prefix"
+  [k]
+  (reset! conn-prefix k))
+
+(defn index []
+  (get-es! :index))
+

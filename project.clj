@@ -1,4 +1,4 @@
-(defproject re-share "0.6.7"
+(defproject re-share "0.6.8"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -41,6 +41,9 @@
      ; es
      [cc.qbits/spandex "0.6.0" :exclusions [org.clojure/clojure]]
      [com.brunobonacci/safely "0.2.4"]
+
+     ; configuration 
+     [clj-config "0.2.0" ]
    ]
 
    :plugins [
