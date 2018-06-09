@@ -16,34 +16,29 @@
 
 (defn pretty-error
   "Pretty print errors to log file"
-  [k m c]
+  [m c]
   (let [st (java.io.StringWriter.)]
     (binding [*out* st]
       (clojure.pprint/pprint m))
-    (merge-config!
-     {:appenders
-      {:spit
-       (spit-appender {:fname (get-in c [k :log :path] (<< "~(name k).log"))})}})
-    (error "Following configuration errors found:\n" (.toString st))))
+    (println "Following configuration errors found:\n" (.toString st))))
 
-(defn read-and-validate [k f]
+(defn read-and-validate [f]
   (let [c (conf/read-config path) errors (f c)]
     (when-not (empty? errors)
-      (pretty-error k errors c)
+      (pretty-error errors c)
       (System/exit 1))
     c))
 
 (def config (atom {}))
 
 (defn load
-  "Loading configuration for project k and validate using f"
-  [k f]
+  "Loading configuration and validate using f"
+  [f]
   (info "Loading configuration")
   (if path
-    (info (reset! config (read-and-validate k f)))
+    (reset! config (read-and-validate f))
     (when-not (System/getProperty "disable-conf") ; enables repl/testing
-      (error
-       (<< "Missing configuration file, you should add ~{path}"))
+      (println (<< "Missing configuration file, you should add ~{path}"))
       (System/exit 1))))
 
 (defn get!

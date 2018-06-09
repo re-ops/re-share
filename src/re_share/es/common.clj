@@ -121,14 +121,13 @@
 
 (def conn-prefix (atom :default))
 
-(defn get-es! [& ks]
-  (apply get! :elasticsearch @conn-prefix ks))
+(defn get-es! []
+  (get! :shared :elasticsearch @conn-prefix))
 
 (defn prefix-switch
   "Change es prefix"
   [k]
   (reset! conn-prefix k))
 
-(defn index []
-  (get-es! :index))
-
+(defn index [k]
+  (get! k :elasticsearch :index))
