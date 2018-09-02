@@ -97,7 +97,6 @@
   [index mappings]
   (ok (s/request (connection) {:url [index] :method :put :body mappings})))
 
-
 (defn clear
   "Clear index and type"
   [index]
