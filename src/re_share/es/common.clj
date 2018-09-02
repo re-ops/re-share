@@ -97,8 +97,9 @@
   [index mappings]
   (ok (s/request (connection) {:url [index] :method :put :body mappings})))
 
+
 (defn clear
-  "Creates systems index and type"
+  "Clear index and type"
   [index]
   (when (exists? index)
     (info "Clearing index" index)
