@@ -16,6 +16,7 @@
 
      ; logging
      [com.taoensso/timbre "4.10.0"]
+     [com.fzakaria/slf4j-timbre "0.3.8"]
      [timbre-ns-pattern-level "0.1.2"]
 
      ; timeunits
@@ -39,7 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; es
-     [cc.qbits/spandex "0.6.0" :exclusions [org.clojure/clojure]]
+     [cc.qbits/spandex "0.6.4" :exclusions [org.clojure/clojure]]
      [com.brunobonacci/safely "0.2.4"]
 
      ; configuration 
