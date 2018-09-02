@@ -4,13 +4,14 @@
    [clojure.core.strint :refer (<<)]
    [qbits.spandex :as s]
    [taoensso.timbre :refer (refer-timbre)]
-   [safely.core :refer [safely]]))
+   [safely.core :refer [safely]])
+  (:import
+   [org.apache.http.ssl SSLContextBuilder]
+   [org.apache.http.conn.ssl TrustSelfSignedStrategy]))
 
 (refer-timbre)
 
 (def c (atom nil))
-
-(def snif (atom nil))
 
 (defn connection []
   (if @c
@@ -32,16 +33,23 @@
     (catch java.net.ConnectException e
       (throw (ex-info "Elasticsearch is down" {})))))
 
+(defn self-signed-context
+  "trusting self signed ssl certs"
+  []
+  (.build (.loadTrustMaterial (SSLContextBuilder/create) (TrustSelfSignedStrategy.))))
+
+(defn add-context [m]
+  (assoc-in m [:http-client :ssl-context] (self-signed-context)))
+
 (defn connect
   "Connecting to Elasticsearch"
-  [{:keys [host port user pass] :as m}]
+  [{:keys [host auth self?]}]
   (when-not @c
-    (info (<< "Connecting to elasticsearch using http://~{host}:~{port}"))
-    (reset! c
-            (s/client {:hosts [(<< "http://~{host}:~{port}")]
-                       :basic-auth {:user user :password pass}}))
-    (check)
-    (reset! snif (s/sniffer @c))))
+    (info (<< "Connecting to elasticsearch ~{host}"))
+    (let [m {:hosts [host] :http-client {:auth-caching? true :basic-auth auth}}]
+      (reset! c
+              (s/client (if self? (add-context m) m)))
+      (check))))
 
 (defn stop
   "Reset connection atom"
@@ -49,7 +57,4 @@
   (info "Closing elasticsearch connection")
   (when @c
     (s/close! @c)
-    (reset! c nil))
-  (when @snif
-    (s/close! @snif)
-    (reset! snif nil)))
+    (reset! c nil)))
