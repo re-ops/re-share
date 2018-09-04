@@ -53,12 +53,12 @@
   ([index]
    (delete-call [index]))
   ([index t id]
-   (delete-call [index t id])))
+   (delete-call [index id])))
 
 (defn delete-all
-  [index t]
+  [index]
   (try
-    (ok (s/request (connection) {:url [index t :_delete_by_query] :method :post :body {:query {:match_all {}}}}))
+    (ok (s/request (connection) {:url [index :_delete_by_query] :method :post :body {:query {:match_all {}}}}))
     (catch Exception e
       (handle-ex e))))
 
@@ -69,23 +69,23 @@
     (catch Exception e
       (handle-ex e))))
 
-(defn put [index t id m]
-  (put-call [index t id] m))
+(defn put [index id m]
+  (put-call [index id] m))
 
-(defn get [index t id]
+(defn get [index id]
   (try
-    (get-in (s/request (connection) {:url [index t id] :method :get}) [:body :_source])
+    (get-in (s/request (connection) {:url [index id] :method :get}) [:body :_source])
     (catch Exception e
       (when-not (= 404 (:status (ex-data e)))
         (handle-ex e)))))
 
 (defn create
-  "Persist instance m of type t and return generated id"
-  [index t m]
+  "Persist instance m of and return generated id"
+  [index m]
   (try
-    (let [{:keys [status body] :as resp} (s/request (connection) {:url [index t] :method :post :body m})]
+    (let [{:keys [status body] :as resp} (s/request (connection) {:url [index] :method :post :body m})]
       (when-not (ok resp)
-        (throw (ex-info "failed to create" {:resp resp :m m :t t :index index})))
+        (throw (ex-info "failed to create" {:resp resp :m m :index index})))
       (body :_id))
     (catch Exception e
       (handle-ex e))))
@@ -98,24 +98,24 @@
   (ok (s/request (connection) {:url [index] :method :put :body mappings})))
 
 (defn clear
-  "Clear index and type"
+  "Clear index"
   [index]
   (when (exists? index)
     (info "Clearing index" index)
     (delete index)))
 
 (defn all
-  "An all query using match all on provided type, this should use scrolling for 10K systems"
-  [index type]
+  "An all query using match all on provided index this should use scrolling for 10K systems"
+  [index]
   (let [query {:size 10000 :query {:match_all {}}}
-        {:keys [body]} (s/request (connection) {:url [index type :_search] :method :get :body query})]
+        {:keys [body]} (s/request (connection) {:url [index :_search] :method :get :body query})]
     (mapv (juxt :_id :_source) (get-in body [:hits :hits]))))
 
 (defn delete-by
   "Delete by query like {:match {:type \"nmap scan\"}}"
-  [index type query]
+  [index query]
   (try
-    (s/request (connection) {:url [index type :_delete_by_query] :method :post :body {:query query}})
+    (s/request (connection) {:url [index :_delete_by_query] :method :post :body {:query query}})
     (catch Exception e
       (handle-ex e))))
 
@@ -129,5 +129,8 @@
   [k]
   (reset! conn-prefix k))
 
-(defn index [k]
-  (get! k :elasticsearch :index))
+(defn index
+  ([k]
+   (get! k :elasticsearch :index))
+  ([k t]
+   (str (get! k :elasticsearch :index) "-" (name t))))
