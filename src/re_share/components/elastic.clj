@@ -10,18 +10,18 @@
 
 (defn initialize
   "Creates systems index and types"
-  [types]
-  (doseq [[k t :as m] types]
-    (let [index (common/index k t)]
-      (when-not (exists? index)
-        (info "Creating index" index)
-        (create-index index {:mappings m})))))
+  [parent types]
+  (doseq [[k t] types]
+    (let [idx (common/index parent k)]
+      (when-not (exists? idx)
+        (info "Creating index" idx)
+        (create-index idx {:mappings {k t}})))))
 
-(defrecord Elastic [types k]
+(defrecord Elastic [types parent]
   Lifecyle
   (setup [this]
     (node/connect (get-es!))
-    (initialize types))
+    (initialize parent types))
   (start [this]
     (node/connect (get-es!)))
   (stop [this]
