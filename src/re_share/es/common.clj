@@ -24,7 +24,7 @@
 
 (defn- handle-ex [e]
   (when-not (reactor-stopped e)
-    (error e (ex-data e))
+    (error "ES error" e)
     (throw e)))
 
 (defn exists-call
@@ -50,10 +50,11 @@
       (handle-ex e))))
 
 (defn delete
-  ([index]
-   (delete-call [index]))
+  "Delete all under index or a single id"
+  ([index t]
+   (delete-call [index t]))
   ([index t id]
-   (delete-call [index id])))
+   (delete-call [index t id])))
 
 (defn delete-all
   [index]
@@ -69,21 +70,21 @@
     (catch Exception e
       (handle-ex e))))
 
-(defn put [index id m]
-  (put-call [index id] m))
+(defn put [index t id m]
+  (put-call [index t id] m))
 
-(defn get [index id]
+(defn get [index t id]
   (try
-    (get-in (s/request (connection) {:url [index id] :method :get}) [:body :_source])
+    (get-in (s/request (connection) {:url [index t id] :method :get}) [:body :_source])
     (catch Exception e
       (when-not (= 404 (:status (ex-data e)))
         (handle-ex e)))))
 
 (defn create
   "Persist instance m of and return generated id"
-  [index m]
+  [index t m]
   (try
-    (let [{:keys [status body] :as resp} (s/request (connection) {:url [index] :method :post :body m})]
+    (let [{:keys [status body] :as resp} (s/request (connection) {:url [index t] :method :post :body m})]
       (when-not (ok resp)
         (throw (ex-info "failed to create" {:resp resp :m m :index index})))
       (body :_id))
@@ -113,9 +114,9 @@
 
 (defn delete-by
   "Delete by query like {:match {:type \"nmap scan\"}}"
-  [index query]
+  [index t query]
   (try
-    (s/request (connection) {:url [index :_delete_by_query] :method :post :body {:query query}})
+    (s/request (connection) {:url [index t :_delete_by_query] :method :post :body {:query query}})
     (catch Exception e
       (handle-ex e))))
 
