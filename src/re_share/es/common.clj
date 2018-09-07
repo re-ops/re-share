@@ -99,11 +99,11 @@
   (ok (s/request (connection) {:url [index] :method :put :body mappings})))
 
 (defn clear
-  "Clear index"
-  [index]
+  "Clear index type"
+  [index t]
   (when (exists? index)
     (info "Clearing index" index)
-    (delete index)))
+    (delete index t)))
 
 (defn all
   "An all query using match all on provided index this should use scrolling for 10K systems"
