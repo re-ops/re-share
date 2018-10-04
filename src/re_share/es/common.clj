@@ -2,6 +2,7 @@
   "Common ES functions"
   (:refer-clojure :exclude (get))
   (:require
+   [re-share.core :refer (error-m)]
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [qbits.spandex :as s]
@@ -24,7 +25,7 @@
 
 (defn- handle-ex [e]
   (when-not (reactor-stopped e)
-    (error "ES error" e)
+    (error-m e)
     (throw e)))
 
 (defn exists-call
