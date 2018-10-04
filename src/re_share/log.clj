@@ -1,7 +1,7 @@
 (ns re-share.log
   "log collection"
   (:require
-   [clojure.core.strint :refer  (<<)]
+   [clojure.core.strint :refer (<<)]
    [me.raynes.fs :refer (glob delete)]
    [timbre-ns-pattern-level :as level]
    [clojure.string :refer (join upper-case)]
@@ -9,7 +9,6 @@
    [taoensso.timbre.appenders.core :refer (println-appender)]
    [clansi.core :refer (style)]
    [taoensso.timbre :refer (refer-timbre set-level! merge-config!)]
-   [clojure.core.strint :refer (<<)]
    [chime :refer [chime-ch]]
    [clj-time.core :as t]
    [clj-time.format :as f]
@@ -78,3 +77,4 @@
 
 (defn refer-share-logging []
   (require '[re-share.log :as share-log :refer (debug-on debug-off redirect-output)]))
+
