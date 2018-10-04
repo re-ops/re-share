@@ -11,15 +11,17 @@
 
 (refer-timbre)
 
-(defn next-index [k mappings]
+(defn next-index
   "Create tommorow index"
+  [k mappings]
   (watch :create-next-day-index (every-day 23)
          (fn []
            (let [tommorow (t/plus (t/now) (t/day 1))]
              (create-index (day-index k tommorow) mappings)))))
 
-(defn purge-index [k t]
+(defn purge-index
   "Clear index from last week"
+  [k t]
   (watch :create-next-day-index (every-day 23)
          (fn []
            (let [last-week (t/minus (t/now) (t/day 7))]
