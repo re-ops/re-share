@@ -6,6 +6,8 @@
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [qbits.spandex :as s]
+   [clj-time.core :as t]
+   [clj-time.format :as f]
    [re-share.es.node :refer (connection)]))
 
 (refer-timbre)
@@ -131,8 +133,19 @@
   [k]
   (reset! conn-prefix k))
 
+(def day-format (f/formatter "yyyyMMdd"))
+
+(defn with-day [day idx]
+  (str idx "-" (f/unparse day-format day)))
+
 (defn index
+  "Today index (optionally with type)"
   ([k]
-   (get! k :elasticsearch :index))
+   (with-day (t/now) (get! k :elasticsearch :index)))
   ([k t]
-   (str (get! k :elasticsearch :index) "-" (name t))))
+   (with-day (t/now) (str (get! k :elasticsearch :index) "-" (name t)))))
+
+(defn day-index
+  "index for a specific day"
+  [k day]
+  (with-day day (index k)))
