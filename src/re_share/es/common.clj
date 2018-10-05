@@ -2,6 +2,7 @@
   "Common ES functions"
   (:refer-clojure :exclude (get))
   (:require
+   [clojure.string :refer (split)]
    [re-share.core :refer (error-m)]
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
@@ -100,6 +101,10 @@
   "Create an index with provided mappings"
   [index mappings]
   (ok (s/request (connection) {:url [index] :method :put :body mappings})))
+
+(defn list-indices []
+  (map #(filter (comp not empty?) (split % #"\s"))
+       (split (:body (s/request (connection) {:url [:_cat :indices] :method :get})) #"\n")))
 
 (defn clear
   "Clear index type"
