@@ -4,6 +4,7 @@
    [taoensso.timbre :refer (refer-timbre)]
    [re-share.components.core :refer (Lifecyle)]
    [re-share.es.node :as node]
+   [re-share.es.cleanup :as clean]
    [re-share.es.common :as common :refer (get-es! exists? create-index)]))
 
 (refer-timbre)
@@ -15,7 +16,8 @@
     (let [idx (common/index parent k)]
       (when-not (exists? idx)
         (info "Creating index" idx)
-        (create-index idx {:mappings {k t}})))))
+        (create-index idx {:mappings {k t}}))
+      (clean/setup-index-jobs idx {k t}))))
 
 (defrecord Elastic [types parent]
   Lifecyle
