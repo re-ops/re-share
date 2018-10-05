@@ -22,11 +22,11 @@
 (defn purge-index
   "Clear index from last week"
   [k t]
-  (watch :create-next-day-index (every-day 23)
+  (watch :clear-last-week-index (every-day 23)
          (fn []
            (let [last-week (t/minus (t/now) (t/day 7))]
              (delete (day-index k last-week) t)))))
 
-(defn index-jobs [k mappings t]
+(defn setup-index-jobs [k mappings]
   (next-index k mappings)
-  (purge-index k t))
+  (purge-index k (first (keys mappings))))
