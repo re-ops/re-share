@@ -145,13 +145,11 @@
   (str idx "-" (f/unparse day-format day)))
 
 (defn index
-  "Today index (optionally with type)"
-  ([k]
-   (with-day (t/now) (get! k :elasticsearch :index)))
-  ([k t]
-   (with-day (t/now) (str (get! k :elasticsearch :index) "-" (name t)))))
+  "index with key prefix and type postfix (since ES 6x onlys single type per index is supported)"
+  [k t]
+  (with-day (t/now) (str (get! k :elasticsearch :index) "-" (name t))))
 
 (defn day-index
   "index for a specific day"
-  [k day]
-  (with-day day (index k)))
+  [k t day]
+  (with-day day (index k t)))
