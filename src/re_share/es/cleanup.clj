@@ -16,7 +16,7 @@
   [k mappings]
   (watch :create-next-day-index (every-day 23)
          (fn []
-           (let [tommorow (t/plus (t/now) (t/day 1))]
+           (let [tommorow (t/plus (t/now) (t/days 1))]
              (doseq [[t m] mappings]
                (create-index (day-index k t tommorow) {t m}))))))
 
