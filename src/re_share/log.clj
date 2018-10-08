@@ -6,6 +6,7 @@
    [timbre-ns-pattern-level :as level]
    [clojure.string :refer (join upper-case)]
    [taoensso.timbre.appenders.3rd-party.rolling :refer (rolling-appender)]
+   [taoensso.timbre.appenders.3rd-party.logstash :refer (logstash-appender)]
    [taoensso.timbre.appenders.core :refer (println-appender)]
    [clansi.core :refer (style)]
    [taoensso.timbre :refer (refer-timbre set-level! merge-config!)]
@@ -63,6 +64,11 @@
   (merge-config!
    {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
   (run-purge (* 60 60 24)))
+
+(defn logstash
+  "Add logstash appender"
+  [host port]
+  (merge-config! {:appenders {:logstash (logstash-appender host port)}}))
 
 (defn debug-on
   ([] (set-level! :debug))
