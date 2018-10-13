@@ -17,7 +17,7 @@
       (when-not (exists? idx)
         (info "Creating index" idx)
         (create-index idx {:mappings {k t}}))
-      (clean/setup-index-jobs idx {k t}))))
+      (clean/setup-index-jobs parent {k t}))))
 
 (defrecord Elastic [types parent]
   Lifecyle
