@@ -95,12 +95,13 @@
     (catch Exception e
       (handle-ex e))))
 
-(def ^:const settings {:number_of_shards 1})
+(def ^:const default-settings {:settings {:number_of_shards 1}})
 
 (defn create-index
   "Create an index with provided mappings"
-  [index mappings]
-  (ok (s/request (connection) {:url [index] :method :put :body mappings})))
+  [index {:keys [mappings] :as spec}]
+  {:pre [mappings]}
+  (ok (s/request (connection) {:url [index] :method :put :body (merge default-settings spec)})))
 
 (defn list-indices []
   (let [ks [:health :status :index :uuid :pri :rep :docs.count :docs.deleted :store.size :pri.store.size]]
