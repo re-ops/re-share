@@ -25,7 +25,7 @@
   [k mappings]
   (watch :clear-last-week-index (every-day 23)
          (fn []
-           (let [last-week (t/minus (t/now) (t/day 7))]
+           (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings]
                (delete (day-index k t last-week) {t m}))))))
 
