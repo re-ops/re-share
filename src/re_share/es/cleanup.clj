@@ -1,7 +1,7 @@
 (ns re-share.es.cleanup
   "Periodcal ES index cleanup and creation"
   (:require
-   [re-share.es.common :refer (create-index day-index delete)]
+   [re-share.es.common :refer (create-index delete)]
    [clojure.core.strint :refer (<<)]
    [taoensso.timbre :refer (refer-timbre)]
    [clojure.core.strint :refer (<<)]
