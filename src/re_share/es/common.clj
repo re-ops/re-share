@@ -148,6 +148,6 @@
 (defn index
   "index with key prefix and type postfix (since ES 6x onlys single type per index is supported)"
   ([k t]
-    (index k t (t/now)))
+   (index k t (t/now)))
   ([k t d]
-    (with-day d (str (get! k :elasticsearch :index) "-" (name t)))))
+   (with-day d (str (get! k :elasticsearch :index) "-" (name t)))))
