@@ -18,7 +18,7 @@
          (fn []
            (let [tommorow (t/plus (t/now) (t/days 1))]
              (doseq [[t m] mappings]
-               (create-index (day-index k t tommorow) {:mappings {t m}}))))))
+               (create-index (index k t tommorow) {:mappings {t m}}))))))
 
 (defn purge-index
   "Clear index from last week"
@@ -27,7 +27,7 @@
          (fn []
            (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings]
-               (delete (day-index k t last-week) {t m}))))))
+               (delete (index k t last-week) {t m}))))))
 
 (defn setup-index-jobs [k mappings]
   (next-index k mappings)
