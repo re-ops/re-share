@@ -27,8 +27,8 @@
          (fn []
            (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings]
-               (delete (index k t last-week) {t m}))))))
+               (delete-class [(keyword (index k t last-week))]))))))
 
 (defn setup-index-jobs [k mappings]
   (next-index k mappings)
-  (purge-index k (first (keys mappings))))
+  (purge-index k mappings))
