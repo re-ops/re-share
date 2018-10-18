@@ -1,7 +1,7 @@
 (ns re-share.es.cleanup
   "Periodcal ES index cleanup and creation"
   (:require
-   [re-share.es.common :refer (create-index delete index)]
+   [re-share.es.common :refer (create-index delete-call index)]
    [clojure.core.strint :refer (<<)]
    [taoensso.timbre :refer (refer-timbre)]
    [clojure.core.strint :refer (<<)]
@@ -27,7 +27,7 @@
          (fn []
            (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings]
-               (delete-class [(keyword (index k t last-week))]))))))
+               (delete-call [(keyword (index k t last-week))]))))))
 
 (defn setup-index-jobs [k mappings]
   (next-index k mappings)
