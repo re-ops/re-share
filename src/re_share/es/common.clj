@@ -151,3 +151,12 @@
    (index k t (t/now)))
   ([k t d]
    (with-day d (str (get! k :elasticsearch :index) "-" (name t)))))
+
+(defn mappings
+  "get index mappings"
+  [idx t]
+  (try
+    (:body (s/request (connection) {:url [idx :_mappings t] :method :get}))
+    (catch Exception e
+      (when-not (= 404 (:status (ex-data e)))
+        (handle-ex e)))))
