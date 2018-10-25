@@ -3,9 +3,9 @@
   (:require
    [taoensso.timbre :refer (refer-timbre)]
    [re-share.components.core :refer (Lifecyle)]
-   [zenati.node :as node]
+   [zentai.node :as node]
    [re-share.es.cleanup :as clean]
-   [zenati.core :refer (exists? create-index)]
+   [zentai.core :refer (exists? create-index)]
    [re-share.es.common :as common :refer (get-es!)]))
 
 (refer-timbre)

@@ -40,7 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; es
-     [zenati "0.1.1"]
+     [zentai "0.1.2"]
 
      ; configuration
      [clj-config "0.2.0" ]
