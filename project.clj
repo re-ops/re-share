@@ -1,4 +1,4 @@
-(defproject re-share "0.8.10"
+(defproject re-share "0.9.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -40,8 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; es
-     [cc.qbits/spandex "0.6.4" :exclusions [org.clojure/clojure]]
-     [com.brunobonacci/safely "0.2.4"]
+     [zenati "0.1.1"]
 
      ; configuration
      [clj-config "0.2.0" ]
