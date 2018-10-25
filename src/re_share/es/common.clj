@@ -122,6 +122,13 @@
         {:keys [body]} (s/request (connection) {:url [index :_search] :method :get :body query})]
     (mapv (juxt :_id :_source) (get-in body [:hits :hits]))))
 
+(defn search
+  "An all query using match all on provided index this should use scrolling for 10K systems"
+  [index q limit]
+  (let [query {:size limit :query q}
+        {:keys [body]} (s/request (connection) {:url [index :_search] :method :get :body query})]
+    (mapv (juxt :_id :_source) (get-in body [:hits :hits]))))
+
 (defn delete-by
   "Delete by query like {:match {:type \"nmap scan\"}}"
   [index t query]
