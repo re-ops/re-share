@@ -15,6 +15,11 @@
 
 (def day-format (f/formatter "yyyyMMdd"))
 
+(defn prefix-switch
+  "Change es prefix"
+  [k]
+  (reset! conn-prefix k))
+
 (defn with-day [day idx]
   (str idx "-" (f/unparse day-format day)))
 
