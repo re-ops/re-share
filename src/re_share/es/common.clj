@@ -1,6 +1,7 @@
 (ns re-share.es.common
   "Common ES functions"
   (:require
+   [zentai.core :refer (conn-prefix)]
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [clj-time.core :as t]
@@ -8,17 +9,10 @@
 
 (refer-timbre)
 
-(def conn-prefix (atom :default))
-
 (defn get-es! []
   (get! :shared :elasticsearch @conn-prefix))
 
 (def day-format (f/formatter "yyyyMMdd"))
-
-(defn prefix-switch
-  "Change es prefix"
-  [k]
-  (reset! conn-prefix k))
 
 (defn with-day [day idx]
   (str idx "-" (f/unparse day-format day)))
