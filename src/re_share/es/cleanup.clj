@@ -19,6 +19,7 @@
          (fn []
            (let [tommorow (t/plus (t/now) (t/days 1))]
              (doseq [[t m] mappings]
+               (info "creating new index" (index k t tommorow) {:mappings {t m}})
                (create-index (index k t tommorow) {:mappings {t m}}))))))
 
 (defn purge-index
