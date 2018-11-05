@@ -29,7 +29,8 @@
            (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings
                      :let [idx (keyword (index k t last-week))]]
-               (when-not (exists? idx)
+               (when (exists? idx)
+                 (info "clearing old index" idx)
                  (delete-index idx)))))))
 
 (defn setup-index-jobs [k mappings]
