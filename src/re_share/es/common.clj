@@ -17,10 +17,14 @@
 (defn with-day [day idx]
   (str idx "-" (f/unparse day-format day)))
 
-(defn index
-  "index with key prefix and type postfix (since ES 6x onlys single type per index is supported)"
+(defn day-index
+  "An index for the current day (for large indecies that are deleted after a fixed time range)"
   ([k t]
    (index k t (t/now)))
   ([k t d]
-   (with-day d (str (get! k :elasticsearch :index) "-" (name t)))))
+   (with-day d (index k t))))
 
+(defn index
+  "Index with key prefix and type postfix (since ES 6x onlys single type per index is supported)"
+  [k t]
+   (str (get! k :elasticsearch :index) "-" (name t)))
