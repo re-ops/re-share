@@ -14,7 +14,7 @@
   "Creates systems index and types"
   [parent types]
   (doseq [[k t] types]
-    (let [idx (common/index parent k)]
+    (let [idx (common/day-index parent k)]
       (when-not (exists? idx)
         (info "Creating index" idx)
         (create-index idx {:mappings {k t}}))
