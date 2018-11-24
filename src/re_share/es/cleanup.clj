@@ -2,7 +2,7 @@
   "Periodcal ES index cleanup and creation"
   (:require
    [rubber.core :refer (create-index delete-index exists?)]
-   [re-share.es.common :refer (index)]
+   [re-share.es.common :refer (day-index)]
    [clojure.core.strint :refer (<<)]
    [taoensso.timbre :refer (refer-timbre)]
    [clojure.core.strint :refer (<<)]
@@ -19,8 +19,8 @@
          (fn []
            (let [tommorow (t/plus (t/now) (t/days 1))]
              (doseq [[t m] mappings]
-               (info "creating new index" (index k t tommorow) {:mappings {t m}})
-               (create-index (index k t tommorow) {:mappings {t m}}))))))
+               (info "creating new index" (day-index k t tommorow) {:mappings {t m}})
+               (create-index (day-index k t tommorow) {:mappings {t m}}))))))
 
 (defn purge-index
   "Clear index from last week"
@@ -29,7 +29,7 @@
          (fn []
            (let [last-week (t/minus (t/now) (t/days 7))]
              (doseq [[t m] mappings
-                     :let [idx (keyword (index k t last-week))]]
+                     :let [idx (keyword (day-index k t last-week))]]
                (when (exists? idx)
                  (info "clearing old index" idx)
                  (delete-index idx)))))))
