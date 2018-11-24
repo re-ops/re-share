@@ -1,4 +1,4 @@
-(defproject re-share "0.9.6"
+(defproject re-share "0.9.7"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -39,8 +39,8 @@
      ; pretty output
      [narkisr/clansi "1.2.0"]
 
-     ; es
-     [rubber "0.2.0"]
+     ; Elasticsearch
+     [rubber "0.3.0"]
 
      ; configuration
      [clj-config "0.2.0" ]
