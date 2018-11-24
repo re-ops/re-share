@@ -40,7 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; es
-     [zentai "0.2.0"]
+     [rubber "0.2.0"]
 
      ; configuration
      [clj-config "0.2.0" ]
