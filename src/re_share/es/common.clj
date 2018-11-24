@@ -1,7 +1,7 @@
 (ns re-share.es.common
   "Common ES functions"
   (:require
-   [zentai.core :refer (conn-prefix)]
+   [rubber.core :refer (conn-prefix)]
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [clj-time.core :as t]

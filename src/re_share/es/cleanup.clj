@@ -1,7 +1,7 @@
 (ns re-share.es.cleanup
   "Periodcal ES index cleanup and creation"
   (:require
-   [zentai.core :refer (create-index delete-index exists?)]
+   [rubber.core :refer (create-index delete-index exists?)]
    [re-share.es.common :refer (index)]
    [clojure.core.strint :refer (<<)]
    [taoensso.timbre :refer (refer-timbre)]
