@@ -40,7 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; Elasticsearch
-     [rubber "0.3.0"]
+     [rubber "0.3.1"]
 
      ; configuration
      [clj-config "0.2.0" ]
