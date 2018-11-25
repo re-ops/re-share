@@ -34,6 +34,6 @@
 
 (defn instance
   "creates a Elastic components"
-  [types parent]
-  (Elastic. types parent))
+  [types parent daily?]
+  (Elastic. types parent daily?))
 
