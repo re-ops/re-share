@@ -9,7 +9,7 @@
    [taoensso.timbre.appenders.3rd-party.logstash :refer (logstash-appender)]
    [taoensso.timbre.appenders.core :refer (println-appender)]
    [clansi.core :refer (style)]
-   [taoensso.timbre :refer (refer-timbre set-level! merge-config!)]
+   [taoensso.timbre :refer (refer-timbre set-level! merge-config! set-config!)]
    [chime :refer [chime-ch]]
    [clj-time.core :as t]
    [clj-time.format :as f]
@@ -45,25 +45,36 @@
 (def level-color
   {:info :green :debug :blue :error :red :warn :yellow})
 
-(defn output-fn
-  "Timbre logger format function"
-  ([data] (output-fn nil data))
+(defn colourful-log
+  "A colorful human friendly output scheme"
+  ([data] (colourful-log nil data))
   ([opts data] ; For partials
    (let [{:keys [level ?err #_vargs msg_ ?ns-str ?file hostname_ timestamp_ ?line]} data]
      (str (style (upper-case (name level)) (level-color level)) " " (force timestamp_) " [" (style ?file :bg-black) "@" ?line "] "  ": " (force msg_)))))
 
+(defn basic-log
+  "A simple logging shceme useful in central logging"
+  ([data] (basic-log nil data))
+  ([opts data] ; For partials
+   (let [{:keys [level ?err #_vargs msg_ ?ns-str ?file hostname_ timestamp_ ?line]} data]
+     (str (upper-case (name level)) " " (force timestamp_) " [" ?file "@" ?line "] "  ": " (force msg_)))))
+
 (defn setup
-  "See https://github.com/ptaoussanis/timbre"
-  [n bs ws]
-  ; disable-coloring
-  (merge-config!
-   {:output-fn (partial output-fn  {:stacktrace-fonts {}})})
-  (merge-config! {:ns-blacklist bs})
-  (merge-config! {:appenders {:println (merge {:ns-whitelist ws} (println-appender {:stream :auto}))
-                              :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
-  (merge-config!
-   {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
-  (run-purge (* 60 60 24)))
+  "Setting up logging:
+    * file - file log output
+    * blacklisted - namespaces whos log won't be included
+    * stdout - namespaces whoe logs will be included in stdout
+   Optional:
+    * output-fn - the output format function to use (colourful-log by default)
+    * purge? - purge old log files (false by default)
+  "
+  [file blacklisted stdout & {:keys [output-fn purge?] :or {output-fn colourful-log purge? false}}]
+  (set-config! {:appenders {:println (merge {:ns-whitelist stdout} (println-appender {:stream :auto}))
+                            :rolling (rolling-appender {:path (str file ".log") :pattern :weekly})}
+                :ns-blacklist blacklisted
+                :output-fn (partial output-fn  {:stacktrace-fonts {}}); disable-coloring
+                :timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
+  (when purge? (run-purge (* 60 60 24))))
 
 (defn logstash
   "Add logstash appender"
