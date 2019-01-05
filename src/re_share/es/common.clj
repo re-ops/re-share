@@ -20,7 +20,7 @@
 (defn index
   "Index with key prefix and type postfix (since ES 6x onlys single type per index is supported)"
   [k t]
-   (str (get! k :elasticsearch :index) "-" (name t)))
+  (str (get! k :elasticsearch :index) "-" (name t)))
 
 (defn day-index
   "An index for the current day (for large indecies that are deleted after a fixed time range)"
@@ -28,5 +28,4 @@
    (index k t (t/now)))
   ([k t d]
    (with-day d (index k t))))
-
 
