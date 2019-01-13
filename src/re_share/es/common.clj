@@ -25,7 +25,7 @@
 (defn day-index
   "An index for the current day (for large indecies that are deleted after a fixed time range)"
   ([k t]
-   (index k t (t/now)))
+   (day-index k t (t/now)))
   ([k t d]
    (with-day d (index k t))))
 
