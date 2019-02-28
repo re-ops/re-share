@@ -49,17 +49,24 @@
                      (let [result (apply f args)]
                        (swap! status update k
                               (fn [{:keys [period] :as m}] (merge m {:result result :time (local-now) :period (rest period)})))))
-                   {:on-finished (fn [] (debug "job done" k))})))
+                   {:on-finished
+                    (fn []
+                      (swap! status dissoc k)
+                      (info "job done" k))
+                    :error-handler
+                    (fn [e]
+                      (error e)
+                      (throw e))})))
 
 (defn halt!
   ([]
    (doseq [[k f] @chs] (halt! k)))
   ([k]
    (debug "closing channel")
+   ; calling a zero arg function to cancel the schedule
    ((@chs k))
-   (debug "clearing chs and status atoms")
-   (swap! chs dissoc k)
-   (swap! status dissoc k)))
+   (debug "clearing chs atom")
+   (swap! chs dissoc k)))
 
 (defn local-str [t]
   (f/unparse (f/formatter-local "dd/MM/YY HH:mm:ss") t))
