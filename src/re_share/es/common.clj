@@ -4,9 +4,6 @@
    [clojure.core.strint :refer (<<)]
    ; cleanup scheduling
    [re-share.schedule :refer (watch every-day)]
-   [clj-time.core :as t]
-   [chime :refer [chime-ch]]
-   [rubber.node :as node]
    [rubber.core :refer (conn-prefix exists? create-index delete-index)]
    [re-share.config :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
@@ -51,7 +48,7 @@
   (watch :clear-last-week-index (every-day 23)
          (fn []
            (let [last-week (t/minus (t/now) (t/days 7))]
-             (doseq [[t m] mappings
+             (doseq [[t _] mappings
                      :let [idx (keyword (day-index k t last-week))]]
                (when (exists? idx)
                  (info "clearing old index" idx)
