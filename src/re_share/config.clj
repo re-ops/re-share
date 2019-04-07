@@ -32,13 +32,21 @@
 
 (s/def :kvm/node (s/keys :req-un [::username ::host ::port]))
 
-(s/def ::nodes (s/map-of keyword? :kvm/node))
+(s/def :kvm/nodes (s/map-of keyword? :kvm/node))
 
-(s/def ::kvm (s/keys :req-un [::nodes]))
+(s/def :re-core/kvm (s/keys :req-un [:kvm/nodes]))
 
-(s/def :re-core/hypervisor (s/keys :opt-un [::kvm]))
+(s/def :lxc/node (s/keys :req-un [::host ::port]))
 
-(s/def ::re-core (s/keys :req-un [::elasticsearch :re-core/hypervisor]))
+(s/def :lxc/nodes (s/map-of keyword? :lxc/node))
+
+(s/def :re-core/lxc (s/keys :req-un [:lxc/nodes]))
+
+(s/def :re-core/hypervisor (s/keys :opt-un [:re-core/kvm :re-core/lxc]))
+
+(s/def :re-core/queue-dir string?)
+
+(s/def ::re-core (s/keys :req-un [::elasticsearch :re-core/hypervisor :re-core/queue-dir]))
 
 (s/def ::shared (s/keys :req-un [:shared/elasticsearch :shared/ssh]))
 
