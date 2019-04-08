@@ -2,6 +2,7 @@
   "Configuration handling"
   (:refer-clojure :exclude  [load])
   (:require
+   [re-share.spec :as re-ops]
    [expound.alpha :as expound]
    [clojure.spec.alpha :as s]
    [aero.core :as aero]
@@ -12,7 +13,7 @@
 
 (s/def ::elasticsearch (s/keys :req-un [::index]))
 
-(s/def ::hosts (s/coll-of string?))
+(s/def ::hosts (s/coll-of :re-ops/host))
 
 (s/def ::cluster (s/keys :req-un [::hosts]))
 
@@ -24,19 +25,15 @@
 
 (s/def ::re-mote (s/keys :req-un [::elasticsearch]))
 
-(s/def ::port integer?)
-
-(s/def ::host string?)
-
 (s/def ::username string?)
 
-(s/def :kvm/node (s/keys :req-un [::username ::host ::port]))
+(s/def :kvm/node (s/keys :req-un [::username :re-ops/host :re-ops/port]))
 
 (s/def :kvm/nodes (s/map-of keyword? :kvm/node))
 
 (s/def :re-core/kvm (s/keys :req-un [:kvm/nodes]))
 
-(s/def :lxc/node (s/keys :req-un [::host ::port]))
+(s/def :lxc/node (s/keys :req-un [:re-ops/host :re-ops/port]))
 
 (s/def :lxc/nodes (s/map-of keyword? :lxc/node))
 
