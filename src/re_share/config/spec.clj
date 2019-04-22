@@ -1,6 +1,5 @@
 (ns re-share.config.spec
   (:require
-   [re-share.spec :as re-ops]
    [clojure.spec.alpha :as s]))
 
 (s/def ::index string?)
