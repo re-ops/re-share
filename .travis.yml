@@ -1,6 +1,6 @@
 language: clojure
 jdk:
   - oraclejdk8
-script: 
+script:
   - cp ./resources/re-ops.edn ~/.re-ops.edn
   - lein travis
