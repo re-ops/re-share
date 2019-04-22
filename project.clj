@@ -48,7 +48,6 @@
    ]
 
    :plugins [
-     [jonase/eastwood "0.2.4"]
      [lein-cljfmt "0.5.6"]
      [lein-ancient "0.6.15" :exclusions [org.clojure/clojure]]
      [lein-tag "0.1.0"]
@@ -72,7 +71,7 @@
 
    :aliases {
      "travis" [
-        "do" "clean," "compile," "cljfmt" "check," "eastwood"
+        "do" "clean," "compile," "cljfmt" "check"
      ]
      "docs" [
          "with-profile" "codox" "do" "codox"

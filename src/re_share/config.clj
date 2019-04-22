@@ -6,8 +6,7 @@
    [expound.alpha :as expound]
    [clojure.spec.alpha :as s]
    [aero.core :as aero]
-   [clojure.core.strint :refer (<<)]
-   [clojure.java.io :refer (file)]))
+   [clojure.core.strint :refer (<<)]))
 
 (s/def ::index string?)
 
