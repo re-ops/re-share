@@ -45,6 +45,9 @@
      ; configuration
      [aero "1.1.3"]
      [expound "0.7.2"]
+
+     ; encryption
+     [mvxcvi/clj-pgp "0.10.0"]
    ]
 
    :plugins [
