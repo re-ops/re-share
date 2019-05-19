@@ -1,12 +1,7 @@
-(ns re-share.config
-  "Configuration handling"
-  (:refer-clojure :exclude  [load])
+(ns re-share.config.spec
   (:require
    [re-share.spec :as re-ops]
-   [expound.alpha :as expound]
-   [clojure.spec.alpha :as s]
-   [aero.core :as aero]
-   [clojure.core.strint :refer (<<)]))
+   [clojure.spec.alpha :as s]))
 
 (s/def ::index string?)
 
@@ -48,25 +43,3 @@
 
 (s/def ::config (s/keys :req-un [::re-mote ::re-core ::shared]))
 
-(def path
-  (<< "~(System/getProperty \"user.home\")/.re-ops.edn"))
-
-(def ^{:private true :dynamic true} profile {:profile :dev})
-
-(def config
-  (let [c (aero/read-config path profile)]
-    (if-not (s/valid? ::config c)
-      (expound/expound ::config c)
-      c)))
-
-(defn get!
-  "Reading a keys path from configuration raises an error of keys not found"
-  [& ks]
-  (if-let [v (get-in config ks)]
-    v
-    (throw (ex-info (<< "No matching configuration keys ~{ks} found") {:keys ks :type ::missing-conf}))))
-
-(defn get*
-  "nil on missing version of get!"
-  [& keys]
-  (get-in config keys))
