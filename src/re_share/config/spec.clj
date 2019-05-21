@@ -15,7 +15,11 @@
 
 (s/def :shared/private-key-path string?)
 
+(s/def :shared/public string?)
+
 (s/def :shared/ssh (s/keys :req-un [:shared/private-key-path]))
+
+(s/def :shared/pgp (s/keys :req-un [:shared/public]))
 
 (s/def ::re-mote (s/keys :req-un [::elasticsearch]))
 
@@ -39,7 +43,7 @@
 
 (s/def ::re-core (s/keys :req-un [::elasticsearch :re-core/hypervisor :re-core/queue-dir]))
 
-(s/def ::shared (s/keys :req-un [:shared/elasticsearch :shared/ssh]))
+(s/def ::shared (s/keys :req-un [:shared/elasticsearch :shared/ssh :share/pgp]))
 
 (s/def ::config (s/keys :req-un [::re-mote ::re-core ::shared]))
 
