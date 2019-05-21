@@ -19,13 +19,14 @@
   "Load configuration into an Atom (can be called multiple times)"
   []
   (let [c (aero/read-config path profile)]
-    (if-not (s/valid? :cs/config c)
-      (expound/expound :cs/config c)
+    (if-not (s/valid? ::cs/config c)
+      (expound/expound ::cs/config c)
       (reset! config c))))
 
 (defn get!
   "Reading a keys path from configuration raises an error of keys not found"
   [& ks]
+  {:pre [@config]}
   (if-let [v (get-in @config ks)]
     v
     (throw (ex-info (<< "No matching configuration keys ~{ks} found") {:keys ks :type ::missing-conf}))))
@@ -33,5 +34,6 @@
 (defn get*
   "nil on missing version of get!"
   [& keys]
+  {:pre [@config]}
   (get-in @config keys))
 
