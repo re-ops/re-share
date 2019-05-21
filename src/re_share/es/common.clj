@@ -5,7 +5,7 @@
    ; cleanup scheduling
    [re-share.schedule :refer (watch every-day)]
    [rubber.core :refer (conn-prefix exists? create-index delete-index)]
-   [re-share.config :refer (get!)]
+   [re-share.config.core :refer (get!)]
    [taoensso.timbre :refer (refer-timbre)]
    [clj-time.core :as t]
    [clj-time.format :as f]))
