@@ -11,11 +11,17 @@
 
      gpg --no-default-keyring --keyring trustedkeys.gpg --export-secret-keys >> test/resources/secret.gpg"
   (:require
-   [clojure.java.io :as io]
+   [clojure.java.io :as io :refer (delete-file)]
+   [clojure.core.strint :refer  (<<)]
+   [clojure.java.shell :refer (sh)]
+   [re-share.core :refer (wait-for)]
    [clj-pgp.message :as msg]
    [clj-pgp.core :as pgp]
-   [clj-pgp.keyring :as keyring])
+   [clj-pgp.keyring :as keyring]
+   [taoensso.timbre :refer  (refer-timbre)])
   (:import java.util.Base64))
+
+(refer-timbre)
 
 (defn load-public [path]
   (keyring/load-public-keyring (io/file path)))
@@ -47,6 +53,38 @@
   (let [k (first (list-private (load-private secret-key)))
         prv (pgp/unlock-key k pass)]
     (msg/decrypt encrypted prv)))
+
+(def alpha-numeric
+  (map char (concat (range 48 58) (range 66 91) (range 97 123))))
+
+(defn random-str  [l]
+  (apply str
+         (map (fn [_] (rand-nth alpha-numeric)) (range l))))
+
+(defn read-pass
+  "Under both lein run and lein repl (System/console) is nil, we use following workaround (works only under tmux):
+      1. Create a tmux window and use read -s to write the password into a file.
+      2. Read the file and delete it.
+   Note:
+     1. This isn't as secure as System/console readPassword but still better than reading the password in the clear.
+     2. We assume that we run under Tmunx (no check is made)
+    "
+  []
+  (let [f (<< "/tmp/~(random-str 10)")]
+    (try
+      (sh "tmux" "split-window" (<< "read -s pass && echo ${pass} >> ~{f}"))
+      (wait-for {:timeout [5000 :ms] :sleep [500 :ms]}
+                #(try
+                   (not-empty (slurp f))
+                   (catch Exception e false))
+                "Timed out while reading the password")
+      (slurp f)
+      (finally
+        (try
+          (delete-file f)
+          (catch Exception e
+            (error (<< "Failed to delete ~{f} temporary password file! please make sure to delete it."))
+            (System/exit 1)))))))
 
 (comment
   (def encrypted (encrypt "this is a secret!" "test/resources/public.gpg"))
