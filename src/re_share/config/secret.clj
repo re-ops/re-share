@@ -13,12 +13,12 @@
     (.toByteArray out)))
 
 (defn load-secrets
-  "Load secret source file from encrypted store and output into target
-   This cannot be invoked in the repl due to the lack of System console (see read-pass)"
+  "Load encrypted secrets file into target, this requires tmux (see read-pass)"
   [input target prv]
-  (let [pass (clojure.string/trim (read-pass))
-        output (enc/decrypt (slurp-bytes (io/file input)) prv pass)]
-    (spit target output)))
+  (when-not (.exists (io/file target))
+    (let [pass (clojure.string/trim (read-pass))
+          output (enc/decrypt (slurp-bytes (io/file input)) prv pass)]
+      (spit target output))))
 
 (defn save-secrets
   "Save secrets.edn into an encrypted file"
