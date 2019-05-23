@@ -12,3 +12,4 @@ pom.xml.asc
 .curve
 test/resources/public.gpg
 test/resources/secret.gpg
+secrets
