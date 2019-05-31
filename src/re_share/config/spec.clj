@@ -3,6 +3,10 @@
    [clojure.spec.alpha :as s]
    [re-share.spec :as re-ops]))
 
+(s/def ::password
+  ; Minimum eight characters, at least one letter, one number and one special character:
+  (s/and string? #(re-matches #"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" %)))
+
 (s/def ::index string?)
 
 (s/def ::elasticsearch (s/keys :req-un [::index]))
@@ -31,11 +35,18 @@
 
 (s/def :re-core/kvm (s/keys :req-un [:kvm/nodes]))
 
+(s/def :lxc/crt #(re-matches #"\w+\.crt" %))
+
+(s/def :lxc/p12
+  (s/and string? #(re-matches #"\w+\.p12$" %)))
+
+(s/def :lxc/auth (s/keys :req-un [::password :re-ops/path :lxc/p12]))
+
 (s/def :lxc/node (s/keys :req-un [:re-ops/host :re-ops/port]))
 
 (s/def :lxc/nodes (s/map-of keyword? :lxc/node))
 
-(s/def :re-core/lxc (s/keys :req-un [:lxc/nodes]))
+(s/def :re-core/lxc (s/keys :req-un [:lxc/nodes :lxc/auth]))
 
 (s/def :re-core/hypervisor (s/keys :opt-un [:re-core/kvm :re-core/lxc]))
 
