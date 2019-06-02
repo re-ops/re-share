@@ -73,7 +73,7 @@
   (let [f (<< "/tmp/~(random-str 10)")]
     (try
       (sh "tmux" "split-window" (<< "read -s pass && echo ${pass} >> ~{f}"))
-      (wait-for {:timeout [5000 :ms] :sleep [500 :ms]}
+      (wait-for {:timeout [10000 :ms] :sleep [500 :ms]}
                 #(try
                    (not-empty (slurp f))
                    (catch Exception e false))
