@@ -9,5 +9,8 @@
 
 (s/def :re-ops/host string?)
 
-(s/def :re-ops/path (s/and string? #(re-matches #"[^\\0]+" %)))
+(defn file-path? [s]
+  (re-matches #"[^\\0]+" s))
+
+(s/def :re-ops/path (s/and string? file-path?))
 
