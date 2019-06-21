@@ -53,3 +53,7 @@
   (let [sw (StringWriter.) p (PrintWriter. sw)]
     (.printStackTrace e p)
     (error (.getMessage e) (.toString sw))))
+
+(defn measure [f]
+  (let [starttime (System/nanoTime) r (f)]
+    [r (/ (- (System/nanoTime) starttime) 1e9)]))
