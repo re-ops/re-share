@@ -8,20 +8,18 @@
    [clojure.spec.alpha :as s]
    [re-share.config.spec :as cs]))
 
-(def path
-  (<< "~(System/getProperty \"user.home\")/.re-ops.edn"))
-
-(def ^{:private true :dynamic true} profile {:profile :dev})
-
 (def config (atom nil))
 
 (defn load-config
   "Load configuration into an Atom (can be called multiple times)"
-  []
-  (let [c (aero/read-config path profile)]
-    (if-not (s/valid? ::cs/config c)
-      (expound/expound ::cs/config c)
-      (reset! config c))))
+  ([]
+   (load-config
+    ::cs/config (<< "~(System/getProperty \"user.home\")/.re-ops.edn") {:profile :dev}))
+  ([spec path profile]
+   (let [c (aero/read-config path profile)]
+     (if-not (s/valid? ::cs/config c)
+       (expound/expound ::cs/config c)
+       (reset! config c)))))
 
 (defn get!
   "Reading a keys path from configuration raises an error of keys not found"
