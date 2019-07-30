@@ -67,7 +67,7 @@
       2. Read the file and delete it.
    Note:
      1. This isn't as secure as System/console readPassword but still better than reading the password in the clear.
-     2. We assume that we run under Tmunx (no check is made)
+     2. We assume that we run under tmux (no check is made)
     "
   []
   (let [f (<< "/tmp/~(random-str 10)")]
