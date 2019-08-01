@@ -55,5 +55,10 @@
     (error (.getMessage e) (.toString sw))))
 
 (defn measure [f]
-  (let [starttime (System/nanoTime) r (f)]
-    [r (/ (- (System/nanoTime) starttime) 1e9)]))
+  (let [starttime (System/nanoTime)
+        r (f)
+        endtime (System/nanoTime)]
+    {:start starttime :end endtime :total (/ (- endtime starttime) 1e9) :result r}))
+
+(defn gen-uuid []
+  (.replace (str (java.util.UUID/randomUUID)) "-" ""))
