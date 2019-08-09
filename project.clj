@@ -48,6 +48,9 @@
 
      ; encryption
      [mvxcvi/clj-pgp "0.10.0"]
+
+     ; monitoring
+     [org.clojure/java.jmx "0.3.4"]
    ]
 
    :plugins [
