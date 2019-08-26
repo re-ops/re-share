@@ -6,7 +6,7 @@
      [org.clojure/clojure "1.10.0"]
 
      ; zeromq
-     [org.zeromq/jeromq "0.4.1"]
+     [org.zeromq/jeromq "0.5.1"]
 
      ; fs access
      [me.raynes/fs "1.4.6"]
