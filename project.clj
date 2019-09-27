@@ -1,9 +1,9 @@
-(defproject re-share "0.11.8"
+(defproject re-share "0.11.9"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
-     [org.clojure/clojure "1.10.0"]
+     [org.clojure/clojure "1.10.1"]
 
      ; zeromq
      [org.zeromq/jeromq "0.5.1"]
@@ -40,7 +40,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; Elasticsearch
-     [rubber "0.3.6"]
+     [rubber "0.3.7"]
 
      ; configuration
      [aero "1.1.3"]
