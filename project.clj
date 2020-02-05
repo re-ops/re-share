@@ -1,4 +1,4 @@
-(defproject re-share "0.11.10"
+(defproject re-share "0.12.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -23,10 +23,8 @@
      [fogus/minderbinder "0.3.0"]
 
      ; metrics
-     [com.github.oshi/oshi-core "3.4.3" :exclude [net.java.dev.jna/jna net.java.dev.jna/jna-platform]]
-     [com.github.oshi/oshi-json "3.4.3"]
-     [net.java.dev.jna/jna "4.5.0"]
-     [net.java.dev.jna/jna-platform "4.5.0"]
+     [com.github.oshi/oshi-core "4.3.0"]
+     [org.clojure/java.data "0.2.0"]
 
      ; serialization
      [cheshire "5.7.1"]
@@ -57,6 +55,11 @@
      [lein-set-version "0.3.0"]]
 
    :profiles {
+     :dev {
+       :dependencies [
+         [org.clojure/tools.namespace "0.2.11"]
+       ]
+     }
      :codox {
        :dependencies [
           [org.clojure/tools.reader "1.1.0"]

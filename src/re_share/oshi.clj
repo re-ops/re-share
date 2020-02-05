@@ -1,21 +1,28 @@
 (ns re-share.oshi
   (:require
-   [taoensso.timbre :refer (refer-timbre set-level! merge-config!)]
-   [cheshire.core :refer (parse-string)])
+   [clojure.java.data :as j]
+   [taoensso.timbre :refer (refer-timbre set-level! merge-config!)])
   (:import
-   [oshi.json hardware.CentralProcessor SystemInfo util.PropertiesUtil]))
+   [oshi hardware.CentralProcessor SystemInfo]))
 
 (refer-timbre)
 
 (def si (SystemInfo.))
 
-(def hal (.getHardware si))
+(defn hardware
+  "Get all hardware information from oshi"
+  []
+  (j/from-java (.getHardware si)))
 
-(defn read-metrics
-  ([]
-   (read-metrics (PropertiesUtil/loadProperties "oshi.json.properties")))
-  ([props]
-   (parse-string (.toCompactJSON si props) true)))
+(defn operating-system
+  "Get all operating system information from oshi"
+  []
+  (j/from-java (.getOperatingSystem si)))
+
+(defn read-all
+  "Get all system information using oshi"
+  []
+  (j/from-java si))
 
 (defn linux-type []
   (into {}
@@ -30,9 +37,8 @@
       :Linux (keyword (:name (linux-type)))
       :default (throw (ex-info "OS type isnt supported" {})))))
 
-(defn get-processes []
-  (map bean (.getProcesses (.getOperatingSystem si) 0 nil)))
+(defn get-processes
+  "Get running processes information using oshi"
+  []
+  (j/from-java (.getProcesses (.getOperatingSystem si) 0 nil)))
 
-(comment
-  (clojure.pprint/pprint (bean (.getComputerSystem hal)))
-  (bean (.getProcessor hal)))

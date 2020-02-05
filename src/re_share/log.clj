@@ -53,7 +53,11 @@
      (str (style (upper-case (name level)) (level-color level)) " " (force timestamp_) " [" (style ?file :bg-black) "@" ?line "] "  ": " (force msg_)))))
 
 (defn setup
-  "See https://github.com/ptaoussanis/timbre"
+  "Setting up logs
+    n - name for log output file
+    ws - white listed ns
+    bs - black listed ns (no logs)
+    See https://github.com/ptaoussanis/timbre"
   [n bs ws]
   ; disable-coloring
   (merge-config!
