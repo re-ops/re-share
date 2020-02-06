@@ -24,19 +24,6 @@
   []
   (j/from-java si))
 
-(defn linux-type []
-  (into {}
-        (map (fn [line]
-               (let [[f s] (clojure.string/split line #"=")]
-                 [(keyword (clojure.string/lower-case f)) (clojure.string/replace s "\"" "")]))
-             (line-seq (clojure.java.io/reader "/etc/os-release")))))
-
-(defn os []
-  (let [type (keyword (System/getProperty "os.name"))]
-    (case type
-      :Linux (keyword (:name (linux-type)))
-      :default (throw (ex-info "OS type isnt supported" {})))))
-
 (defn get-processes
   "Get running processes information using oshi"
   []
