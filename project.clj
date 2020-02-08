@@ -87,6 +87,4 @@
   :repositories  {"bintray"  "https://dl.bintray.com/content/narkisr/narkisr-jars"}
 
   :main re-share.config.secret
-
-  :signing {:gpg-key "narkisr@gmail.com"}
 )
