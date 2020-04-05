@@ -6,7 +6,6 @@
   (:import
    java.io.StringWriter
    java.io.PrintWriter
-   java.util.Date
    java.security.MessageDigest
    java.math.BigInteger))
 
@@ -18,31 +17,6 @@
   (first
    (filter
     (fn [p] (try (with-open [s (java.net.ServerSocket. p)] true) (catch Exception e false))) (range from to))))
-
-(defn curr-time [] (.getTime (Date.)))
-
-(def flag (atom true))
-
-(defn wait-for
-  "A general wait for pred function
-     (wait-for {:timeout [1 :minute] #() \"waiting for nothing failed\")}
-  "
-  [{:keys [timeout sleep] :or {sleep [100 :ms]} :as timings} pred message]
-  {:pre [(map? timings)]}
-  (let [wait (+ (curr-time) (parse-time-unit timeout))]
-    (loop []
-      (if (> wait (curr-time))
-        (if (pred)
-          true
-          (when @flag
-            (do (Thread/sleep (parse-time-unit sleep)) (recur))))
-        (throw (ex-info message timings))))))
-
-(defn stop-waits []
-  (reset! flag false))
-
-(defn enable-waits []
-  (reset! flag true))
 
 (defn md5 [^String s]
   (let [algorithm (MessageDigest/getInstance "MD5")

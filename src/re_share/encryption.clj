@@ -14,7 +14,7 @@
    [clojure.java.io :as io :refer (delete-file)]
    [clojure.core.strint :refer  (<<)]
    [clojure.java.shell :refer (sh)]
-   [re-share.core :refer (wait-for)]
+   [re-share.wait :refer (wait-for)]
    [clj-pgp.message :as msg]
    [clj-pgp.core :as pgp]
    [clj-pgp.keyring :as keyring]
