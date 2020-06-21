@@ -66,6 +66,6 @@
           idx (f parent k)]
       (when-not (exists? idx)
         (info "Creating index" idx)
-        (create-index idx {:mappings {k t}}))
+        (create-index idx {:mappings t}))
       (when daily?
         (setup-index-jobs parent {k t})))))

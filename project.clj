@@ -38,7 +38,7 @@
      [narkisr/clansi "1.2.0"]
 
      ; Elasticsearch
-     [rubber "0.3.7"]
+     [rubber "0.4.0"]
 
      ; configuration
      [aero "1.1.3"]
