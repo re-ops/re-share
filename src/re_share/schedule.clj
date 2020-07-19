@@ -3,40 +3,43 @@
   (:require
    [clojure.core.strint :refer (<<)]
    [clansi.core :refer (style)]
-   [clj-time.periodic :refer  [periodic-seq]]
    [taoensso.timbre :refer (refer-timbre)]
-   [chime :refer [chime-at]]
-   [clj-time.format :as f]
-   [clj-time.coerce :as c]
-   [clj-time.core :as t]
-   [clj-time.local :refer [local-now to-local-date-time]]
-   [clojure.core.async :as a :refer [<! go-loop close!]])
-  (:import [org.joda.time DateTimeConstants DateTimeZone DateTime]))
+   [chime.core :refer [chime-at periodic-seq]])
+  (:import
+   [java.time ZonedDateTime ZoneId Period LocalTime DayOfWeek Duration]
+   [java.time.format DateTimeFormatter]))
 
 (refer-timbre)
 
 (def chs (atom {}))
 (def status (atom {}))
 
-(defn in [s]
-  [(-> s t/seconds t/from-now)])
+(defn into-zoned  [instant]
+  (.atZone instant (ZoneId/systemDefault)))
+
+(defn midnight
+  "Get todays midnight"
+  []
+  (.toInstant (.adjustInto (LocalTime/of 0 0) (ZonedDateTime/now (ZoneId/systemDefault)))))
+
+(defn local-now []
+  (.toInstant (ZonedDateTime/now)))
 
 (defn seconds
-  ([n f]
-   (periodic-seq (t/plus (local-now) (t/seconds f)) (t/seconds n)))
-  ([n]
-   (periodic-seq (local-now) (t/seconds n))))
+  [n]
+  (periodic-seq (local-now) (Duration/ofSeconds n)))
 
-(defn every-day [hour]
-  (let [^DateTime now (local-now) dates (periodic-seq (.. now (withTime hour 0 0 0)) (t/days 1))]
-    (if (> (c/to-long (first dates)) (c/to-long now)) dates (rest dates))))
+(defn every-day
+  "Every day at the specified hour"
+  [hour]
+  (filter
+   (fn [date]
+     (= (.getHour (into-zoned date)) hour)) (periodic-seq (midnight) (Duration/ofHours 1))))
 
-(defn on-weekdays [hour]
-  (remove (comp #{DateTimeConstants/SATURDAY DateTimeConstants/SUNDAY} #(.getDayOfWeek ^DateTime %))
-          (every-day hour)))
-
-(defn at-day [day hour]
-  (filter (comp #{day} #(.getDayOfWeek ^DateTime %)) (every-day hour)))
+(defn at-day
+  "At a specific day of the week and hour"
+  [day hour]
+  (filter (fn [date] (= (.getDayOfWeek (into-zoned date)) day)) (every-day hour)))
 
 (defn watch
   "run f using provided period"
@@ -57,19 +60,17 @@
                     (fn [e]
                       (error e)
                       (throw e))})))
-
 (defn halt!
   ([]
    (doseq [[k f] @chs] (halt! k)))
   ([k]
-   (debug "closing channel")
-   ; calling a zero arg function to cancel the schedule
-   ((@chs k))
-   (debug "clearing chs atom")
+   (debug (<< "closing ~{k}"))
+   (.close (@chs k))
+   (debug (<< "clearing ~{k}"))
    (swap! chs dissoc k)))
 
 (defn local-str [t]
-  (f/unparse (f/formatter-local "dd/MM/YY HH:mm:ss") t))
+  (.format (DateTimeFormatter/ofPattern "dd/MM/YY HH:mm:ss") (into-zoned t)))
 
 (defn next-run []
   (doseq [[k {:keys [result period]}] (sort-by (fn [[k m]] (first (m :period))) @status)]

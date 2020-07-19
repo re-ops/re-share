@@ -1,4 +1,4 @@
-(defproject re-share "0.15.2"
+(defproject re-share "0.16.1"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -30,9 +30,8 @@
      [cheshire "5.7.1"]
 
      ; scheduling
-     [clj-time/clj-time "0.14.2"]
-     [org.clojure/core.async "0.3.443"]
-     [jarohen/chime "0.2.1" :exclusions [org.clojure/core.async]]
+     [org.clojure/core.async "1.2.603"]
+     [jarohen/chime "0.3.2" :exclusions [org.clojure/core.async]]
 
      ; pretty output
      [narkisr/clansi "1.2.0"]
