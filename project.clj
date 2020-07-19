@@ -45,6 +45,9 @@
 
      ; encryption
      [mvxcvi/clj-pgp "0.10.0"]
+
+     ; to be removed
+     [clj-time "0.15.2"]
    ]
 
    :plugins [
