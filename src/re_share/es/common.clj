@@ -1,7 +1,6 @@
 (ns re-share.es.common
   "Common ES functions"
   (:require
-   [clojure.core.strint :refer (<<)]
    ; cleanup scheduling
    [re-share.schedule :refer (watch every-day)]
    [rubber.core :refer (conn-prefix exists? create-index delete-index)]
