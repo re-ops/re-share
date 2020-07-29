@@ -70,9 +70,11 @@
    (swap! chs dissoc k)))
 
 (defn local-str [t]
-  (.format (DateTimeFormatter/ofPattern "dd/MM/YY HH:mm:ss") (into-zoned t)))
+  (when t
+    (.format (DateTimeFormatter/ofPattern "dd/MM/YY HH:mm:ss") (into-zoned t))))
 
 (defn next-run []
-  (doseq [[k {:keys [result period]}] (sort-by (fn [[k m]] (first (m :period))) @status)]
+  (doseq [[k {:keys [period]}] (sort-by (fn [[k m]] (first (m :period))) @status)]
     (let [date (local-str (first period))]
-      (println (style date :blue) (<< " ~(name k)")))))
+      (when date
+        (println (style date :blue) (<< " ~(name k)"))))))
