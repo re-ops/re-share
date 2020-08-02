@@ -34,7 +34,7 @@
   [hour]
   (filter
    (fn [date]
-     (= (.getHour (into-zoned date)) hour)) (periodic-seq (midnight) (Duration/ofHours 1))))
+     (= (.getHour (into-zoned date)) hour)) (periodic-seq (local-now) (Duration/ofHours 1))))
 
 (defn at-day
   "At a specific day of the week and hour"
