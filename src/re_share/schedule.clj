@@ -58,8 +58,8 @@
                       (info "job done" k))
                     :error-handler
                     (fn [e]
-                      (error e)
-                      (throw e))})))
+                      (error e))})))
+
 (defn halt!
   ([]
    (doseq [[k f] @chs] (halt! k)))
