@@ -12,7 +12,9 @@
 (defn hardware
   "Get all hardware information from oshi"
   []
-  (j/from-java (.getHardware si)))
+  (let [hardware (.getHardware si)
+        usb (.getUsbDevices hardware true)]
+    (assoc (j/from-java hardware) :usbDevices (j/from-java usb))))
 
 (defn operating-system
   "Get all operating system information from oshi"
