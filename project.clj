@@ -1,4 +1,4 @@
-(defproject re-share "0.16.5"
+(defproject re-share "0.16.6"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -23,7 +23,7 @@
      [fogus/minderbinder "0.3.0"]
 
      ; metrics
-     [com.github.oshi/oshi-core "4.9.4"]
+     [com.github.oshi/oshi-core "5.2.4"]
      [org.clojure/java.data "1.0.86"]
 
      ; serialization
