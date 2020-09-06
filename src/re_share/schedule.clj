@@ -58,7 +58,7 @@
                       (info "job done" k))
                     :error-handler
                     (fn [e]
-                      (error e))})))
+                      (error (<< "job failed ~{k}") e) true)})))
 
 (defn halt!
   ([]
