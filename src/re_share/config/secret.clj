@@ -23,7 +23,8 @@
 (defn save-secrets
   "Save secrets.edn into an encrypted file"
   [input target pub]
-  (let [input (slurp (io/file "/tmp/secrets.edn"))
-        output (enc/encrypt input pub)]
+  (let [data (slurp (io/file input))
+        output (enc/encrypt data pub)]
     (with-open [out (io/output-stream (io/file target))]
-      (.write out output))))
+      (.write out output)
+      (println "secrets saved into" target))))
