@@ -55,15 +55,14 @@
 (defn setup
   "Setting up logs
     n - name for log output file
-    ws - white listed ns
     bs - black listed ns (no logs)
     See https://github.com/ptaoussanis/timbre"
-  [n bs ws]
+  [n bs]
   ; disable-coloring
   (merge-config!
    {:output-fn (partial output-fn  {:stacktrace-fonts {}})})
-  (merge-config! {:ns-blacklist bs})
-  (merge-config! {:appenders {:println (merge {:ns-whitelist ws} (println-appender {:stream :auto}))
+  (merge-config! {:ns-filter (fn [n] (every? #(not (clojure.string/starts-with? n %)) bs))})
+  (merge-config! {:appenders {:println nil
                               :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
   (merge-config!
    {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})

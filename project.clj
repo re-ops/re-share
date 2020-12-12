@@ -1,4 +1,4 @@
-(defproject re-share "0.16.7"
+(defproject re-share "0.17.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
@@ -6,7 +6,7 @@
      [org.clojure/clojure "1.10.1"]
 
      ; zeromq
-     [org.zeromq/jeromq "0.5.1"]
+     [org.zeromq/jeromq "0.5.2"]
 
      ; fs access
      [me.raynes/fs "1.4.6"]
@@ -15,22 +15,22 @@
      [org.clojure/core.incubator "0.1.4"]
 
      ; logging
-     [com.taoensso/timbre "4.10.0"]
-     [com.fzakaria/slf4j-timbre "0.3.8"]
+     [com.taoensso/timbre "5.1.0"]
+     [com.fzakaria/slf4j-timbre "0.3.20"]
      [timbre-ns-pattern-level "0.1.2"]
 
      ; timeunits
      [fogus/minderbinder "0.3.0"]
 
      ; metrics
-     [com.github.oshi/oshi-core "5.2.4"]
+     [com.github.oshi/oshi-core "5.3.6"]
      [org.clojure/java.data "1.0.86"]
 
      ; serialization
-     [cheshire "5.7.1"]
+     [cheshire "5.10.0"]
 
      ; scheduling
-     [org.clojure/core.async "1.2.603"]
+     [org.clojure/core.async "1.3.610"]
      [jarohen/chime "0.3.2" :exclusions [org.clojure/core.async]]
 
      ; pretty output
@@ -40,11 +40,10 @@
      [rubber "0.4.1"]
 
      ; configuration
-     [aero "1.1.3"]
-     [expound "0.7.2"]
+     [aero "1.1.6"]
 
      ; encryption
-     [mvxcvi/clj-pgp "0.10.0"]
+     [mvxcvi/clj-pgp "1.0.0"]
 
      ; to be removed
      [clj-time "0.15.2"]
@@ -59,12 +58,12 @@
    :profiles {
      :dev {
        :dependencies [
-         [org.clojure/tools.namespace "0.2.11"]
+         [org.clojure/tools.namespace "1.1.0"]
        ]
      }
      :codox {
        :dependencies [
-          [org.clojure/tools.reader "1.1.0"]
+          [org.clojure/tools.reader "1.3.4"]
           [codox-theme-rdash "0.1.2"]]
          :plugins [[lein-codox "0.10.3"]]
          :codox {
