@@ -64,8 +64,9 @@
   (merge-config! {:ns-filter (fn [n] (every? #(not (clojure.string/starts-with? n %)) bs))})
   (merge-config! {:appenders {:println nil
                               :rolling (rolling-appender {:path (str n ".log") :pattern :weekly})}})
-  (merge-config!
-   {:timestamp-opts {:timezone  (java.util.TimeZone/getDefault)}})
+  ; timestamp options
+  (merge-config! {:timestamp-opts {:timezone (java.util.TimeZone/getDefault)
+                                   :pattern "dd/MM/yyyy HH:mm:ss ZZ"}})
   (run-purge (* 60 60 24)))
 
 (defn logstash
