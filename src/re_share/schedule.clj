@@ -41,6 +41,14 @@
   [day hour]
   (filter (fn [date] (= (.getDayOfWeek (into-zoned date)) day)) (every-day hour)))
 
+(defn every-nth-day
+  "At an nth day and hour
+    ; Every Second Friday at 23:00
+    (every-nth-day 2 DayOfWeek/Friday 22)
+  "
+  [nt day hour]
+  (keep-indexed (fn [i date] (when (= (mod i nt) 0) date)) (at-day day hour)))
+
 (defn watch
   "run f using provided period"
   [k period f & args]
