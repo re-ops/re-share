@@ -49,33 +49,42 @@
   [nt day hour]
   (keep-indexed (fn [i date] (when (= (mod i nt) 0) date)) (at-day day hour)))
 
-(defn watch
-  "run f using provided period"
-  [k period f & args]
-  (swap! status assoc k {:period period})
-  (swap! chs assoc k
-         (chime-at period
-                   (fn [t]
-                     (trace "chime" t)
-                     (let [result (apply f args)]
-                       (swap! status update k
-                              (fn [{:keys [period] :as m}] (merge m {:result result :time (local-now) :period (rest period)})))))
-                   {:on-finished
-                    (fn []
-                      (swap! status dissoc k)
-                      (info "job done" k))
-                    :error-handler
-                    (fn [e]
-                      (error (<< "job failed ~{k}") e) true)})))
-
 (defn halt!
   ([]
    (doseq [[k f] @chs] (halt! k)))
   ([k]
-   (debug (<< "closing ~{k}"))
    (.close (@chs k))
-   (debug (<< "clearing ~{k}"))
-   (swap! chs dissoc k)))
+   (debug (<< "closed ~{k}"))
+   (swap! chs dissoc k)
+   (debug (<< "cleared ~{k}"))))
+
+(defn watch
+  "run f using provided period"
+  [k period f & args]
+  (try
+    (when (@chs k)
+      (halt! k))
+    (swap! status assoc k {:period period})
+    (swap! chs assoc k
+           (chime-at period
+                     (fn [t]
+                       (trace "chiming at" t)
+                       (try
+                         (let [result (apply f args)]
+                           (swap! status update k
+                                  (fn [{:keys [period] :as m}] (merge m {:result result :time (local-now) :period (rest period)}))))
+                         (catch Throwable t
+                           (error (<< "failed to run ~{k}") t))))
+                     {:on-finished
+                      (fn []
+                        (swap! status dissoc k)
+                        (info "halt of" k "done"))
+                      :error-handler
+                      (fn [e]
+                        (error (<< "scheduled run of ~{k} has failed") e) true)}))
+    (catch Throwable t
+      (error (<< "failed to schedule ~{k}") t)
+      (throw t))))
 
 (defn local-str [t]
   (when t
