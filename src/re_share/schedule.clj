@@ -1,29 +1,18 @@
 (ns re-share.schedule
   "Schedule tasks"
   (:require
+   [re-share.time :refer (into-zoned midnight local-now local-str)]
    [clojure.core.strint :refer (<<)]
    [clansi.core :refer (style)]
    [taoensso.timbre :refer (refer-timbre)]
    [chime.core :refer [chime-at periodic-seq]])
   (:import
-   [java.time ZonedDateTime ZoneId Period LocalTime DayOfWeek Duration]
-   [java.time.format DateTimeFormatter]))
+   [java.time Duration]))
 
 (refer-timbre)
 
 (def chs (atom {}))
 (def status (atom {}))
-
-(defn into-zoned  [instant]
-  (.atZone instant (ZoneId/systemDefault)))
-
-(defn midnight
-  "Get todays midnight"
-  []
-  (.toInstant (.adjustInto (LocalTime/of 0 0) (ZonedDateTime/now (ZoneId/systemDefault)))))
-
-(defn local-now []
-  (.toInstant (ZonedDateTime/now)))
 
 (defn seconds
   [n]
@@ -85,10 +74,6 @@
     (catch Throwable t
       (error (<< "failed to schedule ~{k}") t)
       (throw t))))
-
-(defn local-str [t]
-  (when t
-    (.format (DateTimeFormatter/ofPattern "dd/MM/YY HH:mm:ss") (into-zoned t))))
 
 (defn next-run []
   (doseq [[k {:keys [period]}] (sort-by (fn [[k m]] (first (m :period))) @status)]

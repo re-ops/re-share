@@ -1,4 +1,4 @@
-(defproject re-share "0.17.2"
+(defproject re-share "0.18.0"
   :description "Common utilities for re-ops"
   :url "https://github.com/re-ops/re-share"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
