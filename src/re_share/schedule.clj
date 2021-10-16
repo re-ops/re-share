@@ -42,10 +42,11 @@
   ([]
    (doseq [[k f] @chs] (halt! k)))
   ([k]
-   (.close (@chs k))
-   (debug (<< "closed ~{k}"))
-   (swap! chs dissoc k)
-   (debug (<< "cleared ~{k}"))))
+   (when-let [c (@chs k)]
+     (.close c)
+     (debug (<< "closed ~{k}"))
+     (swap! chs dissoc k)
+     (debug (<< "cleared ~{k}")))))
 
 (defn watch
   "run f using provided period"
